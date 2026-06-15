@@ -1,35 +1,19 @@
-import { useTranslations } from "next-intl";
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import ReadingProgress from "@/components/ReadingProgress";
 
 export default function Home() {
-  const t = useTranslations("a11y");
   return (
-    <>
-      <a
-        href="#main-content"
-        className="focus:bg-primary-600 sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:px-4 focus:py-2 focus:text-white"
-      >
-        {t("skipToContent")}
-      </a>
-      <ReadingProgress />
-      <Header />
-      <main id="main-content" className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-950">
-        <Hero />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Testimonials />
-        <Contact />
-      </main>
-      <Footer />
-    </>
+    <div className="flex flex-col bg-slate-50 dark:bg-slate-950">
+      <Hero />
+      <Skills />
+      <Experience />
+      <Projects />
+      <Testimonials />
+      <Contact />
+    </div>
   );
 }
