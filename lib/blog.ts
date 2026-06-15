@@ -47,7 +47,16 @@ export function getAllPosts(): PostMeta[] {
     .map((f) => readPostFile(f.replace(/\.mdx$/, "")))
     .filter((p): p is Post => p !== null)
     .sort((a, b) => (a.date < b.date ? 1 : -1))
-    .map(({ content: _content, ...meta }) => meta);
+    .map(
+      (p): PostMeta => ({
+        slug: p.slug,
+        title: p.title,
+        description: p.description,
+        date: p.date,
+        tags: p.tags,
+        readingMinutes: p.readingMinutes,
+      }),
+    );
 }
 
 export function getPost(slug: string): Post | null {
