@@ -15,8 +15,9 @@ const ContactSchema = z.object({
   name: z.string().trim().min(2, "Nom trop court").max(100),
   email: z.string().trim().email("Email invalide").max(160),
   message: z.string().trim().min(10, "Message trop court").max(5000),
-  // Champ piège invisible pour les bots : doit rester vide.
-  company: z.string().max(0).optional().or(z.literal("")),
+  // Champ piège invisible pour les bots. On l'accepte dans le schéma puis on
+  // le traite plus bas : s'il est rempli, on simule un succès sans rien envoyer.
+  company: z.string().optional(),
 });
 
 // Rate-limit en mémoire (basique, par instance) : 5 requêtes / 10 min / IP.
