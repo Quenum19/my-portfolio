@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* La classe `.dark` posée sur <html> pilote le thème sombre
    (et non plus `prefers-color-scheme` automatique de Tailwind v4). */

@@ -1,0 +1,60 @@
+---
+title: "Bien démarrer avec Next.js 16 et l'App Router"
+description: "Mes notes pour structurer proprement une application Next.js moderne : App Router, Server Components et Tailwind v4."
+date: "2026-06-10"
+tags: ["Next.js", "React", "Tailwind"]
+---
+
+> ✏️ **Article d'exemple** — remplace ce contenu par tes propres écrits. Le fichier se trouve dans `content/blog/`.
+
+Next.js 16 pousse encore plus loin l'architecture **App Router** et les **Server Components**.
+Voici les points qui changent ma façon de structurer un projet.
+
+## 1. Server Components par défaut
+
+Tout composant est un Server Component tant qu'on n'ajoute pas `"use client"`.
+Cela réduit le JavaScript envoyé au navigateur :
+
+```tsx
+// Server Component : pas d'état, pas de JS côté client
+export default function Page() {
+  return <h1>Bonjour 👋</h1>;
+}
+```
+
+On ne passe en client (`"use client"`) que pour l'interactivité : état, effets, écouteurs d'événements.
+
+## 2. Le `data` au plus près du rendu
+
+Les Server Components peuvent faire des appels asynchrones directement :
+
+```tsx
+export default async function Projets() {
+  const projets = await fetch("https://api.exemple.dev/projets").then((r) => r.json());
+  return (
+    <ul>
+      {projets.map((p) => (
+        <li key={p.id}>{p.titre}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+## 3. Tailwind v4 : la config dans le CSS
+
+Fini le `tailwind.config.js` pour les couleurs : tout passe par `@theme` dans le CSS.
+
+```css
+@theme {
+  --color-primary-500: #0ea5e9;
+}
+```
+
+## En résumé
+
+- Moins de JavaScript côté client
+- Une récupération de données plus simple
+- Une configuration CSS-first avec Tailwind v4
+
+À toi de jouer : écris ton premier vrai article ici !
