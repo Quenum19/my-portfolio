@@ -7,12 +7,27 @@ import { useTranslations } from "next-intl";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
 import { DATA } from "@/lib/data";
+import { useActiveSection } from "@/lib/useActiveSection";
+
+const navLinks = [
+  { key: "home", href: "/#hero", section: "hero" },
+  { key: "skills", href: "/#skills", section: "skills" },
+  { key: "experience", href: "/#experience", section: "experience" },
+  { key: "projects", href: "/#projects", section: "projects" },
+  { key: "blog", href: "/blog", section: null },
+  { key: "contact", href: "/#contact", section: "contact" },
+] as const;
+
+const SECTION_IDS: string[] = navLinks
+  .map((l) => l.section)
+  .filter((s): s is NonNullable<typeof s> => s !== null);
 
 export default function Header() {
   const t = useTranslations("nav");
   const tA11y = useTranslations("a11y");
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const active = useActiveSection(SECTION_IDS);
 
   // Détecter le scroll pour changer le style du header
   useEffect(() => {
@@ -20,15 +35,6 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const navLinks = [
-    { key: "home", href: "/#hero" },
-    { key: "skills", href: "/#skills" },
-    { key: "experience", href: "/#experience" },
-    { key: "projects", href: "/#projects" },
-    { key: "blog", href: "/blog" },
-    { key: "contact", href: "/#contact" },
-  ] as const;
 
   return (
     <header
@@ -46,15 +52,26 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.key}
-              href={link.href}
-              className="hover:text-primary-500 text-sm font-medium transition-colors"
-            >
-              {t(link.key)}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = link.section !== null && active === link.section;
+            return (
+              <Link
+                key={link.key}
+                href={link.href}
+                aria-current={isActive ? "true" : undefined}
+                className={`hover:text-primary-500 relative text-sm font-medium transition-colors ${
+                  isActive ? "text-primary-500" : ""
+                }`}
+              >
+                {t(link.key)}
+                <span
+                  className={`bg-primary-500 absolute -bottom-1.5 left-0 h-0.5 rounded-full transition-all duration-300 ${
+                    isActive ? "w-full" : "w-0"
+                  }`}
+                />
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Actions à droite : langue + thème + menu mobile */}

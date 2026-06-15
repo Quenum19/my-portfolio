@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import Providers from "@/components/Providers";
 import JsonLd from "@/components/JsonLd";
+import Analytics from "@/components/Analytics";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ReadingProgress from "@/components/ReadingProgress";
@@ -78,6 +79,7 @@ export default async function RootLayout({
         className={`${inter.variable} ${jetbrains.variable} dark:bg-dark-bg bg-slate-50 text-slate-900 transition-colors duration-300 dark:text-slate-100`}
       >
         <JsonLd />
+        <Analytics />
         <NextIntlClientProvider>
           <Providers>
             <a
