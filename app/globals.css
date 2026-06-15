@@ -35,6 +35,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Décale l'ancrage des sections pour compenser le header fixe (h-16 = 4rem). */
+    scroll-padding-top: 4rem;
   }
 
   body {
