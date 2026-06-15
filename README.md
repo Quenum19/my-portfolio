@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio — Next.js 16
 
-## Getting Started
+Portfolio de développeur fullstack : bilingue **FR/EN**, dark mode, blog technique en MDX,
+pages projets « case study », formulaire de contact fonctionnel, SEO et accessibilité soignés.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, Turbopack, React Compiler) · **React 19**
+- **Tailwind CSS v4** (config CSS-first via `@theme`) · **Framer Motion**
+- **next-intl** (i18n FR/EN par cookie) · **next-themes** (clair/sombre/système)
+- **Resend** + **Zod** (formulaire de contact) · **MDX** (blog, coloration Shiki)
+
+## Démarrage
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # puis remplir les variables (voir ci-dessous)
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Scripts utiles : `npm run build`, `npm run start`, `npm run lint`, `npm run format`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Où remplir mon contenu
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Tout le contenu est centralisé dans **`lib/data.ts`** (cherche les `// TODO:`).
+Les textes d'interface (boutons, titres de sections) sont dans **`messages/fr.json`** et
+**`messages/en.json`**. Les articles de blog sont des fichiers **`content/blog/*.mdx`**.
 
-## Learn More
+## Variables d'environnement
 
-To learn more about Next.js, take a look at the following resources:
+Voir `.env.example`. Principales :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Rôle |
+| --- | --- |
+| `RESEND_API_KEY` | Active l'envoi réel du formulaire (sinon mode « dry-run »). |
+| `CONTACT_TO_EMAIL` | Destinataire des messages (défaut : email de `lib/data.ts`). |
+| `CONTACT_FROM_EMAIL` | Expéditeur (domaine vérifié Resend). |
+| `NEXT_PUBLIC_SITE_URL` | URL de prod (SEO, sitemap, OG). |
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | Active l'analytics Plausible (sans cookie). Vide = désactivé. |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Déploiement (Vercel)
 
-## Deploy on Vercel
+1. Pousser le dépôt sur GitHub, puis « Import Project » sur [vercel.com](https://vercel.com).
+2. Renseigner les variables d'environnement (au minimum `NEXT_PUBLIC_SITE_URL`,
+   et `RESEND_API_KEY` pour le formulaire).
+3. Build command `next build`, aucune config supplémentaire nécessaire.
+4. Vérifier après déploiement : `/`, `/blog`, `/projets/<slug>`, `/robots.txt`, `/sitemap.xml`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Accessibilité & SEO
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Lien d'évitement clavier, landmarks, focus visibles, `prefers-reduced-motion`,
+métadonnées Open Graph/Twitter, image OG dynamique, JSON-LD `Person`/`WebSite`,
+`robots.ts`, `sitemap.ts`, manifest PWA.
