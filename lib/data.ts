@@ -13,8 +13,8 @@ import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
    1. SITE — métadonnées globales (SEO, URL de prod, analytics)
    --------------------------------------------------------------------- */
 export const SITE = {
-  // TODO: URL finale de déploiement (sert au SEO, sitemap, OG image)
-  url: "https://ton-domaine.dev",
+  // URL de prod (surchargée par NEXT_PUBLIC_SITE_URL sur Vercel si défini)
+  url: "https://my-portfolio-tau-three-56.vercel.app",
   // TODO: @ Twitter/X sans le @ (laisser "" si aucun)
   twitterHandle: "",
   defaultLocale: "fr" as const,
@@ -26,21 +26,23 @@ export const SITE = {
    --------------------------------------------------------------------- */
 export const DATA = {
   personal: {
-    name: "Ton Prénom", // TODO: ton vrai prénom + nom
+    name: "Sio Romuald Quenum", // TODO: ton vrai prénom + nom
     role: "Développeur Web Fullstack",
     age: 24, // TODO: vérifier
     location: "Abidjan, Côte d'Ivoire",
     available: true, // affiche le badge « Disponible »
     bio: "Passionné par la création d'architectures web robustes. Je navigue avec aisance entre le frontend interactif (React) et le backend structuré (Laravel/Node). Autonome et curieux, je transforme des besoins complexes en solutions digitales élégantes.",
-    email: "ton.email@example.com", // TODO: ton vrai email
-    phone: "", // TODO: optionnel, ex. "+225 07 00 00 00 00" (laisser "" pour masquer)
-    // TODO: dépose ton CV en PDF dans public/ et ajuste le chemin (laisser "" pour masquer le bouton)
-    cvUrl: "/cv.pdf",
+    email: "sioquenum75@gmail.com",
+    phone: "+225 0173501445 / +225 0779162986",
+    cvUrl: "/cv.pdf", // fichier dans public/cv.pdf
     socials: [
-      // TODO: remplace les URL par tes vrais profils
-      { name: "GitHub", url: "https://github.com/tonprofil", icon: Github as LucideIcon },
-      { name: "LinkedIn", url: "https://linkedin.com/in/tonprofil", icon: Linkedin as LucideIcon },
-      { name: "Email", url: "mailto:ton.email@example.com", icon: Mail as LucideIcon }, // TODO: même email que ci-dessus
+      { name: "GitHub", url: "https://github.com/Quenum19", icon: Github as LucideIcon },
+      {
+        name: "LinkedIn",
+        url: "https://www.linkedin.com/in/quenum-sio-267122290",
+        icon: Linkedin as LucideIcon,
+      },
+      { name: "Email", url: "mailto:sioquenum75@gmail.com", icon: Mail as LucideIcon },
     ],
   },
 
@@ -164,7 +166,7 @@ export const DATA = {
         "Maîtrise concrète de la stack JavaScript fullstack et du cycle de déploiement cloud.",
       tech: ["React", "Node.js", "Express", "MongoDB", "Render"],
       link: "https://mon-todo-mern-app-client.onrender.com/login",
-      github: "https://github.com/tonprofil/todo-mern", // TODO: vrai lien du dépôt (ou null si privé)
+      github: null, // TODO: mettre le vrai lien du dépôt si public
       type: "MERN Stack",
       year: "2024",
       featured: false,
