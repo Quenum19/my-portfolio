@@ -24,14 +24,19 @@ export default function Projects() {
               className="group bg-white dark:bg-dark-card border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             >
               <div className="h-48 bg-slate-200 dark:bg-slate-700 relative overflow-hidden">
-                {/* Fallback si pas d'image : un gradient */}
+                {/* Fallback (sous l'image) : icône sur un dégradé, visible si l'image manque */}
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-500">
-                   <FolderGit2 size={48} opacity={0.5} />
+                  <FolderGit2 size={48} opacity={0.5} />
                 </div>
-                {/* 
-                  Decommenter quand tu auras les images :
-                  <Image src={project.image} alt={project.title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
-                */}
+                {project.image && (
+                  <Image
+                    src={project.image}
+                    alt={`Aperçu du projet ${project.title}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                )}
                 <div className="absolute top-4 right-4 bg-black/70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
                   {project.type}
                 </div>

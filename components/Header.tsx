@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Code2 } from 'lucide-react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
+import { DATA } from '@/lib/data';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { name: 'Accueil', href: '#' },
+    { name: 'Accueil', href: '#hero' },
     { name: 'Compétences', href: '#skills' },
     { name: 'Expérience', href: '#experience' },
     { name: 'Projets', href: '#projects' },
@@ -28,9 +29,9 @@ export default function Header() {
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="#" className="flex items-center gap-2 font-bold text-xl tracking-tighter">
+        <Link href="#hero" className="flex items-center gap-2 font-bold text-xl tracking-tighter">
           <Code2 className="text-primary-500" />
-          <span>TonPrénom<span className="text-primary-500">.Dev</span></span>
+          <span>{DATA.personal.name.split(' ')[0]}<span className="text-primary-500">.Dev</span></span>
         </Link>
 
         {/* Desktop Nav */}

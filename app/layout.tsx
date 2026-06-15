@@ -3,13 +3,14 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import React from "react";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import { DATA } from "@/lib/data";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" });
 
 export const metadata: Metadata = {
-  title: "Ton Prénom | Développeur Fullstack",
-  description: "Portfolio de développeur Web Fullstack spécialisé React, Laravel et Node.js.",
+  title: `${DATA.personal.name} | ${DATA.personal.role}`,
+  description: DATA.personal.bio,
 };
 
 export default function RootLayout({

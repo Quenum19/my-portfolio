@@ -5,7 +5,7 @@ import { ArrowDown, Code2 } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+    <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
       {/* Background Abstract Shapes */}
       <div className="absolute top-20 right-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl -z-10" />
       <div className="absolute bottom-20 left-0 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl -z-10" />
