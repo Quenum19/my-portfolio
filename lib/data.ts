@@ -157,8 +157,7 @@ export const DATA = {
       title: "Super ToDo List",
       description:
         "Application de gestion de tâches avec authentification. Projet d'apprentissage MERN Stack.",
-      problem:
-        "Mettre en pratique la stack MERN de bout en bout avec une vraie authentification.",
+      problem: "Mettre en pratique la stack MERN de bout en bout avec une vraie authentification.",
       solution:
         "Application full MERN (MongoDB, Express, React, Node) avec authentification, CRUD de tâches et déploiement sur Render.",
       result:

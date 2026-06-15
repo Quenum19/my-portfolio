@@ -1,7 +1,7 @@
-'use client';
-import { ThemeProvider } from 'next-themes';
-import { MotionConfig } from 'framer-motion';
-import React from 'react';
+"use client";
+import { ThemeProvider } from "next-themes";
+import { MotionConfig } from "framer-motion";
+import React from "react";
 
 /**
  * Fournisseurs globaux de l'application :
@@ -12,12 +12,7 @@ import React from 'react';
  */
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </ThemeProvider>
   );

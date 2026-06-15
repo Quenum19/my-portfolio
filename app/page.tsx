@@ -8,18 +8,22 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-950">
+    <>
+      <a
+        href="#main-content"
+        className="focus:bg-primary-600 sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:px-4 focus:py-2 focus:text-white"
+      >
+        Aller au contenu
+      </a>
       <Header />
-      
-      {/* Ajout d'un padding-top pour compenser le header fixed si nécessaire, 
-          mais Hero s'en charge déjà avec min-h-screen */}
-      
-      <Hero />
-      <Skills />
-      <Experience />
-      <Projects />
-      <Contact />
+      <main id="main-content" className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-950">
+        <Hero />
+        <Skills />
+        <Experience />
+        <Projects />
+        <Contact />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
