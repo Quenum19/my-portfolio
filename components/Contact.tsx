@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { DATA } from "@/lib/data";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function Contact() {
+  const t = useTranslations("contact");
   const [status, setStatus] = useState<Status>("idle");
   const [feedback, setFeedback] = useState("");
 
@@ -28,15 +30,15 @@ export default function Contact() {
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || "Une erreur est survenue. Réessaie.");
+        throw new Error(body.error || t("error"));
       }
 
       setStatus("success");
-      setFeedback("Merci ! Ton message a bien été envoyé. Je te réponds vite.");
+      setFeedback(t("success"));
       form.reset();
     } catch (err) {
       setStatus("error");
-      setFeedback(err instanceof Error ? err.message : "Une erreur est survenue.");
+      setFeedback(err instanceof Error ? err.message : t("error"));
     }
   }
 
@@ -49,11 +51,8 @@ export default function Contact() {
 
       <div className="container mx-auto grid gap-16 px-6 md:grid-cols-2">
         <div>
-          <h2 className="mb-6 text-3xl font-bold md:text-4xl">Parlons de votre projet</h2>
-          <p className="mb-8 text-lg text-slate-300">
-            Je suis actuellement disponible pour des missions freelance ou des postes en CDI.
-            Discutons de la manière dont je peux contribuer à votre équipe.
-          </p>
+          <h2 className="mb-6 text-3xl font-bold md:text-4xl">{t("title")}</h2>
+          <p className="mb-8 text-lg text-slate-300">{t("intro")}</p>
 
           <div className="space-y-6">
             <a
@@ -64,7 +63,7 @@ export default function Contact() {
                 <Mail size={20} />
               </div>
               <div>
-                <p className="text-sm text-slate-400">Email</p>
+                <p className="text-sm text-slate-400">{t("emailLabel")}</p>
                 <p className="font-medium">{DATA.personal.email}</p>
               </div>
             </a>
@@ -74,7 +73,7 @@ export default function Contact() {
                 <MapPin size={20} />
               </div>
               <div>
-                <p className="text-sm text-slate-400">Localisation</p>
+                <p className="text-sm text-slate-400">{t("locationLabel")}</p>
                 <p className="font-medium">{DATA.personal.location}</p>
               </div>
             </div>
@@ -95,7 +94,7 @@ export default function Contact() {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium text-slate-300">
-                Nom
+                {t("name")}
               </label>
               <input
                 id="name"
@@ -105,12 +104,12 @@ export default function Contact() {
                 minLength={2}
                 disabled={isLoading}
                 className="focus:ring-primary-500 w-full rounded-lg border border-slate-700 bg-slate-800/50 p-3 transition-all outline-none focus:ring-2 disabled:opacity-60"
-                placeholder="Votre nom"
+                placeholder={t("namePlaceholder")}
               />
             </div>
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium text-slate-300">
-                Email
+                {t("email")}
               </label>
               <input
                 id="email"
@@ -119,13 +118,13 @@ export default function Contact() {
                 required
                 disabled={isLoading}
                 className="focus:ring-primary-500 w-full rounded-lg border border-slate-700 bg-slate-800/50 p-3 transition-all outline-none focus:ring-2 disabled:opacity-60"
-                placeholder="votre@email.com"
+                placeholder={t("emailPlaceholder")}
               />
             </div>
           </div>
           <div className="space-y-2">
             <label htmlFor="message" className="text-sm font-medium text-slate-300">
-              Message
+              {t("message")}
             </label>
             <textarea
               id="message"
@@ -135,7 +134,7 @@ export default function Contact() {
               minLength={10}
               disabled={isLoading}
               className="focus:ring-primary-500 w-full rounded-lg border border-slate-700 bg-slate-800/50 p-3 transition-all outline-none focus:ring-2 disabled:opacity-60"
-              placeholder="Parlez-moi de votre projet..."
+              placeholder={t("messagePlaceholder")}
             />
           </div>
 
@@ -145,7 +144,7 @@ export default function Contact() {
             className="bg-primary-600 hover:bg-primary-500 focus-visible:ring-primary-400 flex w-full items-center justify-center gap-2 rounded-lg py-4 font-bold text-white transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
-            {isLoading ? "Envoi en cours…" : "Envoyer le message"}
+            {isLoading ? t("sending") : t("send")}
           </button>
 
           {/* Retour accessible : annoncé par les lecteurs d'écran */}

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 import { Moon, Sun, Monitor } from "lucide-react";
 
 /**
@@ -9,6 +10,7 @@ import { Moon, Sun, Monitor } from "lucide-react";
  */
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const t = useTranslations("a11y");
   const [mounted, setMounted] = useState(false);
 
   // Détection du montage côté client pour éviter un mismatch d'hydratation
@@ -31,11 +33,7 @@ export default function ThemeToggle() {
   }
 
   const label =
-    theme === "light"
-      ? "Thème clair (cliquer pour sombre)"
-      : theme === "dark"
-        ? "Thème sombre (cliquer pour système)"
-        : "Thème système (cliquer pour clair)";
+    theme === "light" ? t("themeLight") : theme === "dark" ? t("themeDark") : t("themeSystem");
 
   return (
     <button

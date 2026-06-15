@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import React from "react";
 import "./globals.css";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 import Providers from "@/components/Providers";
 import JsonLd from "@/components/JsonLd";
 import { DATA, SITE } from "@/lib/data";
@@ -59,18 +61,22 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="fr" className="scroll-smooth" suppressHydrationWarning>
+    <html lang={locale} className="scroll-smooth" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${jetbrains.variable} dark:bg-dark-bg bg-slate-50 text-slate-900 transition-colors duration-300 dark:text-slate-100`}
       >
         <JsonLd />
-        <Providers>{children}</Providers>
+        <NextIntlClientProvider>
+          <Providers>{children}</Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

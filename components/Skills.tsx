@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { DATA } from "@/lib/data";
+import { useTranslations } from "next-intl";
 import { Database, Layout, Server, Wrench, Code2 } from "lucide-react";
 
 const icons: Record<string, typeof Code2> = {
@@ -11,22 +12,22 @@ const icons: Record<string, typeof Code2> = {
 };
 
 export default function Skills() {
-  // Transformation des données pour l'affichage
+  const t = useTranslations("skills");
+
+  // Les libellés de catégories sont traduits ; les items restent des données.
   const categories = [
-    { id: "frontend", label: "Frontend & UI", items: DATA.skills.frontend },
-    { id: "backend", label: "Backend & API", items: DATA.skills.backend },
-    { id: "database", label: "Base de données", items: DATA.skills.database },
-    { id: "tools", label: "Outils & DevOps", items: DATA.skills.tools },
-  ];
+    { id: "frontend", items: DATA.skills.frontend },
+    { id: "backend", items: DATA.skills.backend },
+    { id: "database", items: DATA.skills.database },
+    { id: "tools", items: DATA.skills.tools },
+  ] as const;
 
   return (
     <section id="skills" className="dark:bg-dark-bg bg-white py-24">
       <div className="container mx-auto px-6">
         <div className="mb-16">
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">Compétences Techniques</h2>
-          <p className="text-slate-600 dark:text-slate-400">
-            Mon arsenal technologique pour créer des solutions complètes.
-          </p>
+          <h2 className="mb-4 text-3xl font-bold md:text-4xl">{t("title")}</h2>
+          <p className="text-slate-600 dark:text-slate-400">{t("subtitle")}</p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -45,7 +46,7 @@ export default function Skills() {
                 <div className="bg-primary-100 dark:bg-primary-900/30 text-primary-600 mb-6 flex h-12 w-12 items-center justify-center rounded-xl">
                   <Icon size={24} />
                 </div>
-                <h3 className="mb-4 text-xl font-bold">{cat.label}</h3>
+                <h3 className="mb-4 text-xl font-bold">{t(cat.id)}</h3>
                 <div className="flex flex-wrap gap-2">
                   {cat.items.map((skill) => (
                     <span

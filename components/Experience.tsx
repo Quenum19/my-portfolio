@@ -1,14 +1,16 @@
 "use client";
 import { motion } from "framer-motion";
 import { DATA } from "@/lib/data";
+import { useTranslations } from "next-intl";
 import { Briefcase } from "lucide-react";
 
 export default function Experience() {
+  const t = useTranslations("experience");
   return (
     <section id="experience" className="bg-slate-50 py-24 dark:bg-slate-900/50">
       <div className="container mx-auto px-6">
         <div className="mb-16">
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">Expérience Professionnelle</h2>
+          <h2 className="mb-4 text-3xl font-bold md:text-4xl">{t("title")}</h2>
           <div className="bg-primary-500 h-1 w-20 rounded"></div>
         </div>
 

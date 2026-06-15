@@ -1,9 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
 import { DATA } from "@/lib/data";
+import { useTranslations } from "next-intl";
 import { ArrowDown } from "lucide-react";
 
 export default function Hero() {
+  const t = useTranslations("hero");
+
   return (
     <section
       id="hero"
@@ -19,43 +22,40 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
-            <span className="relative flex h-2 w-2">
-              <span className="bg-primary-400 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
-              <span className="bg-primary-500 relative inline-flex h-2 w-2 rounded-full"></span>
-            </span>
-            Disponible pour opportunités
-          </div>
+          {DATA.personal.available && (
+            <div className="bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 mb-6 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
+              <span className="relative flex h-2 w-2">
+                <span className="bg-primary-400 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+                <span className="bg-primary-500 relative inline-flex h-2 w-2 rounded-full"></span>
+              </span>
+              {t("badge")}
+            </div>
+          )}
 
           <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">
-            Je construis le{" "}
+            {t("titlePre")}{" "}
             <span className="from-primary-600 bg-gradient-to-r to-purple-600 bg-clip-text text-transparent">
-              Web de demain
+              {t("titleHighlight")}
             </span>
             .
           </h1>
 
           <p className="mb-8 max-w-lg text-xl leading-relaxed text-slate-600 dark:text-slate-400">
-            Salut, je suis{" "}
-            <span className="font-semibold text-slate-900 dark:text-white">
-              {DATA.personal.name}
-            </span>
-            . Développeur Fullstack de {DATA.personal.age} ans. Je transforme vos idées en
-            applications React & Laravel performantes.
+            {t("intro", { name: DATA.personal.name, age: DATA.personal.age })}
           </p>
 
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             <a
               href="#projects"
               className="rounded-lg bg-slate-900 px-8 py-4 font-medium text-white transition-transform hover:scale-105 dark:bg-white dark:text-slate-900"
             >
-              Voir mes projets
+              {t("ctaProjects")}
             </a>
             <a
               href="#contact"
               className="rounded-lg border border-slate-200 px-8 py-4 font-medium transition-colors hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
             >
-              Me contacter
+              {t("ctaContact")}
             </a>
           </div>
         </motion.div>
@@ -80,7 +80,7 @@ export default function Hero() {
   stack: ["React", "Laravel"],
   hardWorker: true,
   quickLearner: true,
-  
+
   code: () => {
     return "Passion & Quality";
   }

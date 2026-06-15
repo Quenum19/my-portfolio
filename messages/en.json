@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "home": "Home",
+    "skills": "Skills",
+    "experience": "Experience",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleLanguage": "Switch language",
+    "themeLight": "Light theme (click for dark)",
+    "themeDark": "Dark theme (click for system)",
+    "themeSystem": "System theme (click for light)"
+  },
+  "hero": {
+    "badge": "Available for opportunities",
+    "titlePre": "I build the",
+    "titleHighlight": "Web of tomorrow",
+    "intro": "Hi, I'm {name}. A {age}-year-old Fullstack Developer. I turn your ideas into high-performance React & Laravel applications.",
+    "ctaProjects": "View my projects",
+    "ctaContact": "Get in touch",
+    "downloadCv": "Download my resume"
+  },
+  "skills": {
+    "title": "Technical Skills",
+    "subtitle": "My technology toolkit for building complete solutions.",
+    "frontend": "Frontend & UI",
+    "backend": "Backend & API",
+    "database": "Database",
+    "tools": "Tools & DevOps"
+  },
+  "experience": {
+    "title": "Professional Experience"
+  },
+  "projects": {
+    "title": "Selected Work",
+    "subtitle": "A selection of my Fullstack and Mobile projects.",
+    "demo": "Live Demo",
+    "code": "Code",
+    "caseStudy": "Case study",
+    "viewProject": "View project",
+    "back": "Back to projects",
+    "problem": "Problem",
+    "solution": "Solution",
+    "result": "Result",
+    "stack": "Tech stack"
+  },
+  "testimonials": {
+    "title": "Trusted by",
+    "subtitle": "A few words from people I've worked with."
+  },
+  "blog": {
+    "title": "Blog & technical writing",
+    "subtitle": "My notes on web development and what I learn along the way.",
+    "readMore": "Read article",
+    "back": "Back to blog",
+    "readingTime": "{minutes} min read",
+    "empty": "No articles yet."
+  },
+  "contact": {
+    "title": "Let's talk about your project",
+    "intro": "I'm currently available for freelance missions or full-time roles. Let's discuss how I can contribute to your team.",
+    "emailLabel": "Email",
+    "locationLabel": "Location",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "message": "Message",
+    "messagePlaceholder": "Tell me about your project...",
+    "send": "Send message",
+    "sending": "Sending…",
+    "success": "Thank you! Your message has been sent. I'll reply soon.",
+    "error": "Something went wrong. Please try again."
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  }
+}
