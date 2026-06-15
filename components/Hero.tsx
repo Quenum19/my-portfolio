@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { DATA } from "@/lib/data";
 import { useTranslations } from "next-intl";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Download } from "lucide-react";
 
 export default function Hero() {
   const t = useTranslations("hero");
@@ -57,6 +57,15 @@ export default function Hero() {
             >
               {t("ctaContact")}
             </a>
+            {DATA.personal.cvUrl && (
+              <a
+                href={DATA.personal.cvUrl}
+                download
+                className="hover:text-primary-500 inline-flex items-center gap-2 px-4 py-4 font-medium text-slate-600 transition-colors dark:text-slate-300"
+              >
+                <Download size={18} /> {t("downloadCv")}
+              </a>
+            )}
           </div>
         </motion.div>
 
