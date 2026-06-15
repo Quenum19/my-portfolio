@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* La classe `.dark` posée sur <html> pilote le thème sombre
+   (et non plus `prefers-color-scheme` automatique de Tailwind v4). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* =========================
+   THÈME — palette & polices (syntaxe Tailwind v4)
+   Définir une couleur ici génère les utilitaires : bg-primary-500, text-dark-bg, etc.
+========================= */
+@theme {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+
+  /* Couleur d'accent principale */
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;
+  --color-primary-600: #0284c7;
+  --color-primary-700: #0369a1;
+  --color-primary-800: #075985;
+  --color-primary-900: #0c4a6e;
+
+  /* Fonds du thème sombre */
+  --color-dark-bg: #0f172a;
+  --color-dark-card: #1e293b;
+}
+
+/* =========================
+   BASE
+========================= */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: var(--color-slate-900);
+    background-color: var(--color-slate-50);
+  }
+
+  .dark body {
+    background-color: var(--color-dark-bg);
+    color: var(--color-slate-100);
+  }
+}
+
+/* =========================
+   UTILITIES
+========================= */
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: var(--color-slate-100);
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    background-color: var(--color-slate-900);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-slate-300);
+    border-radius: 9999px;
+    transition: background-color 0.2s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-500);
+  }
+}
+
+/* =========================
+   ACCESSIBILITÉ — respect de prefers-reduced-motion
+   Coupe les animations/transitions CSS pour les utilisateurs sensibles.
+   (Framer Motion est géré séparément via MotionConfig reducedMotion="user".)
+========================= */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
