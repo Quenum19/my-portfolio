@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { getTranslations, getLocale } from "next-intl/server";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { getContent } from "@/lib/db";
+import { resolveContent } from "@/lib/content";
+import { defaultLocale, locales, type Locale } from "@/i18n/config";
 import { readingMinutes } from "@/lib/reading-time";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -12,8 +14,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function BlogPage() {
   const t = await getTranslations("blog");
-  const locale = await getLocale();
-  const { posts } = await getContent();
+  const rawLocale = (await getLocale()) as Locale;
+  const locale = locales.includes(rawLocale) ? rawLocale : defaultLocale;
+  const { posts } = resolveContent(await getContent(), locale);
   const published = posts.filter((p) => p.published).sort((a, b) => (a.date < b.date ? 1 : -1));
 
   return (

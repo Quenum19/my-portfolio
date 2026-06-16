@@ -9,12 +9,16 @@ import { ContentProvider } from "@/components/ContentProvider";
 import JsonLd from "@/components/JsonLd";
 import Analytics from "@/components/Analytics";
 import { getContent } from "@/lib/db";
+import { resolveContent } from "@/lib/content";
+import { defaultLocale, locales, type Locale } from "@/i18n/config";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const content = await getContent();
+  const raw = await getContent();
+  const locale = (await getLocale()) as Locale;
+  const content = resolveContent(raw, locales.includes(locale) ? locale : defaultLocale);
   const { personal, site } = content;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || site.url;
   const title = `${personal.name} | ${personal.role}`;
@@ -69,8 +73,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getLocale();
-  const content = await getContent();
+  const rawLocale = (await getLocale()) as Locale;
+  const locale = locales.includes(rawLocale) ? rawLocale : defaultLocale;
+  const content = resolveContent(await getContent(), locale);
 
   return (
     <html lang={locale} className="scroll-smooth" suppressHydrationWarning>

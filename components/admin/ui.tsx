@@ -1,5 +1,84 @@
 "use client";
 import { Plus, Trash2, ChevronUp, ChevronDown } from "lucide-react";
+import type { L, LList } from "@/lib/content";
+
+function LangBadge({ lang }: { lang: "FR" | "EN" }) {
+  return (
+    <span className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300 mb-1 inline-block rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wide">
+      {lang}
+    </span>
+  );
+}
+
+/** Champ texte bilingue (FR + EN côte à côte). */
+export function LocalizedInput({ value, onChange }: { value: L; onChange: (v: L) => void }) {
+  return (
+    <div className="grid gap-2 sm:grid-cols-2">
+      <div>
+        <LangBadge lang="FR" />
+        <TextInput value={value.fr} onChange={(e) => onChange({ ...value, fr: e.target.value })} />
+      </div>
+      <div>
+        <LangBadge lang="EN" />
+        <TextInput value={value.en} onChange={(e) => onChange({ ...value, en: e.target.value })} />
+      </div>
+    </div>
+  );
+}
+
+/** Zone de texte bilingue (FR + EN). */
+export function LocalizedTextArea({
+  value,
+  onChange,
+  rows = 3,
+}: {
+  value: L;
+  onChange: (v: L) => void;
+  rows?: number;
+}) {
+  return (
+    <div className="grid gap-2 sm:grid-cols-2">
+      <div>
+        <LangBadge lang="FR" />
+        <TextArea
+          rows={rows}
+          value={value.fr}
+          onChange={(e) => onChange({ ...value, fr: e.target.value })}
+        />
+      </div>
+      <div>
+        <LangBadge lang="EN" />
+        <TextArea
+          rows={rows}
+          value={value.en}
+          onChange={(e) => onChange({ ...value, en: e.target.value })}
+        />
+      </div>
+    </div>
+  );
+}
+
+/** Liste de textes bilingue (FR + EN). */
+export function LocalizedStringList({
+  value,
+  onChange,
+}: {
+  value: LList;
+  onChange: (v: LList) => void;
+}) {
+  return (
+    <div className="grid gap-3 sm:grid-cols-2">
+      <div>
+        <LangBadge lang="FR" />
+        <StringList values={value.fr} onChange={(fr) => onChange({ ...value, fr })} />
+      </div>
+      <div>
+        <LangBadge lang="EN" />
+        <StringList values={value.en} onChange={(en) => onChange({ ...value, en })} />
+      </div>
+    </div>
+  );
+}
 
 export function Field({
   label,

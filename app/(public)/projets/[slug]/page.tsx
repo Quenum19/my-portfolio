@@ -2,9 +2,11 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { getContent } from "@/lib/db";
+import { resolveContent } from "@/lib/content";
+import { defaultLocale, locales, type Locale } from "@/i18n/config";
 
 type Params = { slug: string };
 
@@ -15,7 +17,9 @@ export async function generateStaticParams() {
 }
 
 async function getProject(slug: string) {
-  const { projects } = await getContent();
+  const raw = (await getLocale()) as Locale;
+  const locale = locales.includes(raw) ? raw : defaultLocale;
+  const { projects } = resolveContent(await getContent(), locale);
   return projects.find((p) => p.slug === slug);
 }
 

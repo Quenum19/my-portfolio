@@ -1,10 +1,10 @@
-import type { SiteContent } from "@/lib/content";
+import type { ResolvedContent } from "@/lib/content";
 
 /**
  * Données structurées JSON-LD (schema.org) : Person + WebSite.
  * Améliore la compréhension du site par les moteurs de recherche.
  */
-export default function JsonLd({ content }: { content: SiteContent }) {
+export default function JsonLd({ content }: { content: ResolvedContent }) {
   const { personal, skills, site } = content;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || site.url;
 

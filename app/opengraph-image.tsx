@@ -1,5 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getContent } from "@/lib/db";
+import { resolveContent } from "@/lib/content";
+import { defaultLocale } from "@/i18n/config";
 
 export const alt = "Portfolio";
 export const size = { width: 1200, height: 630 };
@@ -7,7 +9,7 @@ export const contentType = "image/png";
 
 // Image Open Graph dynamique (partage réseaux sociaux).
 export default async function OpengraphImage() {
-  const { personal } = await getContent();
+  const { personal } = resolveContent(await getContent(), defaultLocale);
   return new ImageResponse(
     <div
       style={{

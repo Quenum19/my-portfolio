@@ -6,6 +6,8 @@ import rehypePrettyCode from "rehype-pretty-code";
 import { getTranslations, getLocale } from "next-intl/server";
 import { ArrowLeft, Clock } from "lucide-react";
 import { getContent } from "@/lib/db";
+import { resolveContent } from "@/lib/content";
+import { defaultLocale, locales, type Locale } from "@/i18n/config";
 import { readingMinutes } from "@/lib/reading-time";
 
 type Params = { slug: string };
@@ -16,7 +18,9 @@ export async function generateStaticParams() {
 }
 
 async function getPost(slug: string) {
-  const { posts } = await getContent();
+  const raw = (await getLocale()) as Locale;
+  const locale = locales.includes(raw) ? raw : defaultLocale;
+  const { posts } = resolveContent(await getContent(), locale);
   return posts.find((p) => p.slug === slug && p.published);
 }
 

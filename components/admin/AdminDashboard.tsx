@@ -13,14 +13,18 @@ import type {
 import {
   Field,
   TextInput,
-  TextArea,
   Toggle,
   StringList,
+  LocalizedInput,
+  LocalizedTextArea,
+  LocalizedStringList,
   ListItemCard,
   AddButton,
   move,
 } from "./ui";
 import { ImageField } from "./ImageField";
+
+const emptyL = { fr: "", en: "" };
 
 type TabId =
   | "personal"
@@ -170,9 +174,6 @@ function PersonalSection({
       <Field label="Nom complet">
         <TextInput value={p.name} onChange={(e) => setP({ name: e.target.value })} />
       </Field>
-      <Field label="Titre / rôle">
-        <TextInput value={p.role} onChange={(e) => setP({ role: e.target.value })} />
-      </Field>
       <Field label="Âge">
         <TextInput
           type="number"
@@ -180,9 +181,16 @@ function PersonalSection({
           onChange={(e) => setP({ age: Number(e.target.value) })}
         />
       </Field>
-      <Field label="Localisation">
-        <TextInput value={p.location} onChange={(e) => setP({ location: e.target.value })} />
-      </Field>
+      <div className="md:col-span-2">
+        <Field label="Titre / rôle (FR / EN)">
+          <LocalizedInput value={p.role} onChange={(role) => setP({ role })} />
+        </Field>
+      </div>
+      <div className="md:col-span-2">
+        <Field label="Localisation (FR / EN)">
+          <LocalizedInput value={p.location} onChange={(location) => setP({ location })} />
+        </Field>
+      </div>
       <Field label="Email">
         <TextInput value={p.email} onChange={(e) => setP({ email: e.target.value })} />
       </Field>
@@ -200,8 +208,8 @@ function PersonalSection({
         />
       </div>
       <div className="md:col-span-2">
-        <Field label="Bio">
-          <TextArea rows={4} value={p.bio} onChange={(e) => setP({ bio: e.target.value })} />
+        <Field label="Bio (FR / EN)">
+          <LocalizedTextArea rows={4} value={p.bio} onChange={(bio) => setP({ bio })} />
         </Field>
       </div>
 
@@ -308,34 +316,29 @@ function ExperienceSection({
       {items.map((exp, i) => (
         <ListItemCard
           key={i}
-          title={exp.role || `Expérience ${i + 1}`}
+          title={exp.role.fr || `Expérience ${i + 1}`}
           onMoveUp={i > 0 ? () => onChange(move(items, i, i - 1)) : undefined}
           onMoveDown={i < items.length - 1 ? () => onChange(move(items, i, i + 1)) : undefined}
           onRemove={() => onChange(items.filter((_, j) => j !== i))}
         >
-          <div className="grid gap-3 md:grid-cols-2">
-            <Field label="Poste">
-              <TextInput value={exp.role} onChange={(e) => set(i, { role: e.target.value })} />
-            </Field>
-            <Field label="Entreprise">
-              <TextInput
-                value={exp.company}
-                onChange={(e) => set(i, { company: e.target.value })}
-              />
-            </Field>
-            <Field label="Période">
-              <TextInput value={exp.period} onChange={(e) => set(i, { period: e.target.value })} />
-            </Field>
-            <Field label="Description">
-              <TextInput
-                value={exp.description}
-                onChange={(e) => set(i, { description: e.target.value })}
-              />
-            </Field>
-          </div>
-          <Field label="Réalisations">
-            <StringList
-              values={exp.achievements}
+          <Field label="Entreprise">
+            <TextInput value={exp.company} onChange={(e) => set(i, { company: e.target.value })} />
+          </Field>
+          <Field label="Poste (FR / EN)">
+            <LocalizedInput value={exp.role} onChange={(role) => set(i, { role })} />
+          </Field>
+          <Field label="Période (FR / EN)">
+            <LocalizedInput value={exp.period} onChange={(period) => set(i, { period })} />
+          </Field>
+          <Field label="Description (FR / EN)">
+            <LocalizedInput
+              value={exp.description}
+              onChange={(description) => set(i, { description })}
+            />
+          </Field>
+          <Field label="Réalisations (FR / EN)">
+            <LocalizedStringList
+              value={exp.achievements}
               onChange={(achievements) => set(i, { achievements })}
             />
           </Field>
@@ -348,7 +351,14 @@ function ExperienceSection({
         onClick={() =>
           onChange([
             ...items,
-            { company: "", role: "", period: "", description: "", achievements: [], stack: [] },
+            {
+              company: "",
+              role: { ...emptyL },
+              period: { ...emptyL },
+              description: { ...emptyL },
+              achievements: { fr: [], en: [] },
+              stack: [],
+            },
           ])
         }
         label="Ajouter une expérience"
@@ -371,26 +381,28 @@ function EducationSection({
       {items.map((ed, i) => (
         <ListItemCard
           key={i}
-          title={ed.degree || `Formation ${i + 1}`}
+          title={ed.degree.fr || `Formation ${i + 1}`}
           onMoveUp={i > 0 ? () => onChange(move(items, i, i - 1)) : undefined}
           onMoveDown={i < items.length - 1 ? () => onChange(move(items, i, i + 1)) : undefined}
           onRemove={() => onChange(items.filter((_, j) => j !== i))}
         >
-          <div className="grid gap-3 md:grid-cols-3">
-            <Field label="Diplôme">
-              <TextInput value={ed.degree} onChange={(e) => set(i, { degree: e.target.value })} />
-            </Field>
+          <Field label="Diplôme (FR / EN)">
+            <LocalizedInput value={ed.degree} onChange={(degree) => set(i, { degree })} />
+          </Field>
+          <div className="grid gap-3 md:grid-cols-2">
             <Field label="École">
               <TextInput value={ed.school} onChange={(e) => set(i, { school: e.target.value })} />
             </Field>
-            <Field label="Année">
-              <TextInput value={ed.year} onChange={(e) => set(i, { year: e.target.value })} />
+            <Field label="Année (FR / EN)">
+              <LocalizedInput value={ed.year} onChange={(year) => set(i, { year })} />
             </Field>
           </div>
         </ListItemCard>
       ))}
       <AddButton
-        onClick={() => onChange([...items, { degree: "", school: "", year: "" }])}
+        onClick={() =>
+          onChange([...items, { degree: { ...emptyL }, school: "", year: { ...emptyL } }])
+        }
         label="Ajouter une formation"
       />
     </div>
@@ -439,35 +451,33 @@ function ProjectsSection({
               />
             </Field>
           </div>
-          <Field label="Description courte">
-            <TextInput
+          <Field label="Description courte (FR / EN)">
+            <LocalizedInput
               value={pr.description}
-              onChange={(e) => set(i, { description: e.target.value })}
+              onChange={(description) => set(i, { description })}
             />
           </Field>
-          <div className="grid gap-3 md:grid-cols-3">
-            <Field label="Problème">
-              <TextArea
-                rows={3}
-                value={pr.problem}
-                onChange={(e) => set(i, { problem: e.target.value })}
-              />
-            </Field>
-            <Field label="Solution">
-              <TextArea
-                rows={3}
-                value={pr.solution}
-                onChange={(e) => set(i, { solution: e.target.value })}
-              />
-            </Field>
-            <Field label="Résultat">
-              <TextArea
-                rows={3}
-                value={pr.result}
-                onChange={(e) => set(i, { result: e.target.value })}
-              />
-            </Field>
-          </div>
+          <Field label="Problème (FR / EN)">
+            <LocalizedTextArea
+              rows={3}
+              value={pr.problem}
+              onChange={(problem) => set(i, { problem })}
+            />
+          </Field>
+          <Field label="Solution (FR / EN)">
+            <LocalizedTextArea
+              rows={3}
+              value={pr.solution}
+              onChange={(solution) => set(i, { solution })}
+            />
+          </Field>
+          <Field label="Résultat (FR / EN)">
+            <LocalizedTextArea
+              rows={3}
+              value={pr.result}
+              onChange={(result) => set(i, { result })}
+            />
+          </Field>
           <Field label="Technologies">
             <StringList values={pr.tech} onChange={(tech) => set(i, { tech })} />
           </Field>
@@ -488,10 +498,10 @@ function ProjectsSection({
             {
               slug: "",
               title: "",
-              description: "",
-              problem: "",
-              solution: "",
-              result: "",
+              description: { ...emptyL },
+              problem: { ...emptyL },
+              solution: { ...emptyL },
+              result: { ...emptyL },
               tech: [],
               link: "",
               github: null,
@@ -527,25 +537,23 @@ function TestimonialsSection({
           onMoveDown={i < items.length - 1 ? () => onChange(move(items, i, i + 1)) : undefined}
           onRemove={() => onChange(items.filter((_, j) => j !== i))}
         >
-          <Field label="Citation">
-            <TextArea
-              rows={3}
-              value={tm.quote}
-              onChange={(e) => set(i, { quote: e.target.value })}
-            />
+          <Field label="Citation (FR / EN)">
+            <LocalizedTextArea rows={3} value={tm.quote} onChange={(quote) => set(i, { quote })} />
           </Field>
           <div className="grid gap-3 md:grid-cols-2">
             <Field label="Auteur">
               <TextInput value={tm.author} onChange={(e) => set(i, { author: e.target.value })} />
             </Field>
-            <Field label="Rôle / entreprise">
-              <TextInput value={tm.role} onChange={(e) => set(i, { role: e.target.value })} />
+            <Field label="Rôle / entreprise (FR / EN)">
+              <LocalizedInput value={tm.role} onChange={(role) => set(i, { role })} />
             </Field>
           </div>
         </ListItemCard>
       ))}
       <AddButton
-        onClick={() => onChange([...items, { quote: "", author: "", role: "" }])}
+        onClick={() =>
+          onChange([...items, { quote: { ...emptyL }, author: "", role: { ...emptyL } }])
+        }
         label="Ajouter un témoignage"
       />
     </div>
@@ -560,15 +568,12 @@ function BlogSection({ items, onChange }: { items: Post[]; onChange: (v: Post[])
       {items.map((post, i) => (
         <ListItemCard
           key={i}
-          title={post.title || `Article ${i + 1}`}
+          title={post.title.fr || `Article ${i + 1}`}
           onMoveUp={i > 0 ? () => onChange(move(items, i, i - 1)) : undefined}
           onMoveDown={i < items.length - 1 ? () => onChange(move(items, i, i + 1)) : undefined}
           onRemove={() => onChange(items.filter((_, j) => j !== i))}
         >
           <div className="grid gap-3 md:grid-cols-2">
-            <Field label="Titre">
-              <TextInput value={post.title} onChange={(e) => set(i, { title: e.target.value })} />
-            </Field>
             <Field label="Slug (URL)">
               <TextInput value={post.slug} onChange={(e) => set(i, { slug: e.target.value })} />
             </Field>
@@ -579,30 +584,31 @@ function BlogSection({ items, onChange }: { items: Post[]; onChange: (v: Post[])
                 onChange={(e) => set(i, { date: e.target.value })}
               />
             </Field>
-            <div className="flex items-end">
-              <Toggle
-                checked={post.published}
-                onChange={(published) => set(i, { published })}
-                label="Publié"
-              />
-            </div>
           </div>
-          <Field label="Description">
-            <TextInput
+          <Field label="Titre (FR / EN)">
+            <LocalizedInput value={post.title} onChange={(title) => set(i, { title })} />
+          </Field>
+          <Field label="Description (FR / EN)">
+            <LocalizedInput
               value={post.description}
-              onChange={(e) => set(i, { description: e.target.value })}
+              onChange={(description) => set(i, { description })}
             />
           </Field>
           <Field label="Tags">
             <StringList values={post.tags} onChange={(tags) => set(i, { tags })} />
           </Field>
-          <Field label="Contenu (Markdown)" hint="supporte titres ##, listes, blocs de code ```">
-            <TextArea
+          <Field label="Contenu Markdown (FR / EN)" hint="titres ##, listes, blocs de code ```">
+            <LocalizedTextArea
               rows={12}
               value={post.content}
-              onChange={(e) => set(i, { content: e.target.value })}
+              onChange={(content) => set(i, { content })}
             />
           </Field>
+          <Toggle
+            checked={post.published}
+            onChange={(published) => set(i, { published })}
+            label="Publié"
+          />
         </ListItemCard>
       ))}
       <AddButton
@@ -611,11 +617,11 @@ function BlogSection({ items, onChange }: { items: Post[]; onChange: (v: Post[])
             ...items,
             {
               slug: "",
-              title: "",
-              description: "",
+              title: { ...emptyL },
+              description: { ...emptyL },
               date: new Date().toISOString().slice(0, 10),
               tags: [],
-              content: "",
+              content: { ...emptyL },
               published: false,
             },
           ])

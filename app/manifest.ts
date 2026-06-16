@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
 import { getContent } from "@/lib/db";
+import { resolveContent } from "@/lib/content";
+import { defaultLocale } from "@/i18n/config";
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
-  const { personal } = await getContent();
+  const { personal } = resolveContent(await getContent(), defaultLocale);
   return {
     name: `${personal.name} — Portfolio`,
     short_name: personal.name.split(" ")[0],

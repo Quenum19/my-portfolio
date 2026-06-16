@@ -1,6 +1,6 @@
 import "server-only";
 import { sql } from "@vercel/postgres";
-import { DEFAULT_CONTENT, type SiteContent } from "./content";
+import { DEFAULT_CONTENT, normalizeContent, type SiteContent } from "./content";
 
 // La librairie @vercel/postgres lit POSTGRES_URL. Selon l'intégration Vercel,
 // la variable peut s'appeler DATABASE_URL : on fait le pont si besoin.
@@ -33,8 +33,8 @@ export async function getContent(): Promise<SiteContent> {
     await ensureTable();
     const { rows } = await sql`SELECT data FROM site_content WHERE id = 1`;
     if (rows.length === 0) return DEFAULT_CONTENT;
-    // Fusion superficielle avec le défaut pour tolérer un schéma incomplet.
-    return { ...DEFAULT_CONTENT, ...(rows[0].data as SiteContent) };
+    // Normalise (migre l'ancien format mono-langue vers le bilingue si besoin).
+    return normalizeContent(rows[0].data as SiteContent);
   } catch (e) {
     console.error("[db] getContent: repli sur le contenu par défaut.", e);
     return DEFAULT_CONTENT;
