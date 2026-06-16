@@ -31,7 +31,10 @@ export default function Contact() {
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || t("error"));
+        // Détaille le ou les champs invalides si l'API les renvoie.
+        const details = body.details as Record<string, string[]> | undefined;
+        const fieldMsg = details ? Object.values(details).flat().filter(Boolean).join(" · ") : "";
+        throw new Error(fieldMsg || body.error || t("error"));
       }
 
       setStatus("success");
@@ -137,6 +140,7 @@ export default function Contact() {
               className="focus:ring-primary-500 w-full rounded-lg border border-slate-700 bg-slate-800/50 p-3 transition-all outline-none focus:ring-2 disabled:opacity-60"
               placeholder={t("messagePlaceholder")}
             />
+            <p className="text-xs text-slate-500">{t("messageHint")}</p>
           </div>
 
           <button

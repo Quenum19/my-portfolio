@@ -72,6 +72,7 @@
     "emailPlaceholder": "votre@email.com",
     "message": "Message",
     "messagePlaceholder": "Parlez-moi de votre projet...",
+    "messageHint": "Minimum 10 caractères.",
     "send": "Envoyer le message",
     "sending": "Envoi en cours…",
     "success": "Merci ! Ton message a bien été envoyé. Je te réponds vite.",

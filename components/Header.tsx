@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Code2 } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import ThemeToggle from "./ThemeToggle";
@@ -30,6 +30,12 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const active = useActiveSection(SECTION_IDS);
 
+  // Monogramme (SQ) + nom court (prénom + nom) dérivés du nom complet.
+  const parts = DATA.personal.name.trim().split(/\s+/).filter(Boolean);
+  const initials = ((parts[0]?.[0] ?? "") + (parts[parts.length - 1]?.[0] ?? "")).toUpperCase();
+  const shortName =
+    parts.length > 1 ? `${parts[0]} ${parts[parts.length - 1]}` : DATA.personal.name;
+
   // Détecter le scroll pour changer le style du header
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -42,13 +48,12 @@ export default function Header() {
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${scrolled ? "bg-white/80 shadow-sm backdrop-blur-md dark:bg-slate-900/80" : "bg-transparent"}`}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
-        {/* Logo */}
-        <Link href="/#hero" className="flex items-center gap-2 text-xl font-bold tracking-tighter">
-          <Code2 className="text-primary-500" />
-          <span>
-            {DATA.personal.name.split(" ")[0]}
-            <span className="text-primary-500">.Dev</span>
+        {/* Logo : monogramme + nom */}
+        <Link href="/#hero" className="flex items-center gap-2.5 font-bold tracking-tight">
+          <span className="from-primary-500 flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br to-purple-600 text-sm font-extrabold text-white shadow-sm">
+            {initials}
           </span>
+          <span className="text-lg">{shortName}</span>
         </Link>
 
         {/* Desktop Nav */}
