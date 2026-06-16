@@ -2,7 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getTranslations, getLocale } from "next-intl/server";
 import { ArrowUpRight, Clock } from "lucide-react";
-import { getAllPosts } from "@/lib/blog";
+import { getContent } from "@/lib/db";
+import { readingMinutes } from "@/lib/reading-time";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("blog");
@@ -12,7 +13,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function BlogPage() {
   const t = await getTranslations("blog");
   const locale = await getLocale();
-  const posts = getAllPosts();
+  const { posts } = await getContent();
+  const published = posts.filter((p) => p.published).sort((a, b) => (a.date < b.date ? 1 : -1));
 
   return (
     <div className="bg-slate-50 pt-24 pb-24 dark:bg-slate-950">
@@ -20,11 +22,11 @@ export default async function BlogPage() {
         <h1 className="mb-3 text-4xl font-bold tracking-tight md:text-5xl">{t("title")}</h1>
         <p className="mb-12 text-lg text-slate-600 dark:text-slate-400">{t("subtitle")}</p>
 
-        {posts.length === 0 ? (
+        {published.length === 0 ? (
           <p className="text-slate-500">{t("empty")}</p>
         ) : (
           <ul className="space-y-6">
-            {posts.map((post) => (
+            {published.map((post) => (
               <li key={post.slug}>
                 <Link
                   href={`/blog/${post.slug}`}
@@ -39,7 +41,8 @@ export default async function BlogPage() {
                       })}
                     </time>
                     <span className="flex items-center gap-1">
-                      <Clock size={14} /> {t("readingTime", { minutes: post.readingMinutes })}
+                      <Clock size={14} />{" "}
+                      {t("readingTime", { minutes: readingMinutes(post.content) })}
                     </span>
                   </div>
                   <h2 className="group-hover:text-primary-500 flex items-center gap-1 text-xl font-bold transition-colors">

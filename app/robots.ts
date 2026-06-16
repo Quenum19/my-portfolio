@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
-import { SITE } from "@/lib/data";
+import { getContent } from "@/lib/db";
 
-export default function robots(): MetadataRoute.Robots {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE.url;
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const { site } = await getContent();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || site.url;
   return {
-    rules: { userAgent: "*", allow: "/", disallow: "/api/" },
+    rules: { userAgent: "*", allow: "/", disallow: ["/api/", "/admin"] },
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,
   };

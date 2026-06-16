@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
-import { DATA } from "@/lib/data";
+import { getContent } from "@/lib/db";
 
-export default function manifest(): MetadataRoute.Manifest {
+export default async function manifest(): Promise<MetadataRoute.Manifest> {
+  const { personal } = await getContent();
   return {
-    name: `${DATA.personal.name} — Portfolio`,
-    short_name: DATA.personal.name.split(" ")[0],
-    description: DATA.personal.bio,
+    name: `${personal.name} — Portfolio`,
+    short_name: personal.name.split(" ")[0],
+    description: personal.bio,
     start_url: "/",
     display: "standalone",
     background_color: "#0f172a",

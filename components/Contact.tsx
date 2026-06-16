@@ -2,12 +2,13 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
-import { DATA } from "@/lib/data";
+import { useContent } from "@/components/ContentProvider";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function Contact() {
   const t = useTranslations("contact");
+  const DATA = useContent();
   const [status, setStatus] = useState<Status>("idle");
   const [feedback, setFeedback] = useState("");
 

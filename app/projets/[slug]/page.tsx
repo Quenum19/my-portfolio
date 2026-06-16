@@ -4,22 +4,24 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
-import { DATA } from "@/lib/data";
+import { getContent } from "@/lib/db";
 
 type Params = { slug: string };
 
 // Génère les routes statiques pour chaque projet connu.
-export function generateStaticParams() {
-  return DATA.projects.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const { projects } = await getContent();
+  return projects.map((p) => ({ slug: p.slug }));
 }
 
-function getProject(slug: string) {
-  return DATA.projects.find((p) => p.slug === slug);
+async function getProject(slug: string) {
+  const { projects } = await getContent();
+  return projects.find((p) => p.slug === slug);
 }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
   if (!project) return {};
   return {
     title: project.title,
@@ -34,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
 export default async function ProjectPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
   if (!project) notFound();
 
   const t = await getTranslations("projects");

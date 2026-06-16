@@ -30,12 +30,12 @@ Les textes d'interface (boutons, titres de sections) sont dans **`messages/fr.js
 
 Voir `.env.example`. Principales :
 
-| Variable | Rôle |
-| --- | --- |
-| `RESEND_API_KEY` | Active l'envoi réel du formulaire (sinon mode « dry-run »). |
-| `CONTACT_TO_EMAIL` | Destinataire des messages (défaut : email de `lib/data.ts`). |
-| `CONTACT_FROM_EMAIL` | Expéditeur (domaine vérifié Resend). |
-| `NEXT_PUBLIC_SITE_URL` | URL de prod (SEO, sitemap, OG). |
+| Variable                       | Rôle                                                          |
+| ------------------------------ | ------------------------------------------------------------- |
+| `RESEND_API_KEY`               | Active l'envoi réel du formulaire (sinon mode « dry-run »).   |
+| `CONTACT_TO_EMAIL`             | Destinataire des messages (défaut : email de `lib/data.ts`).  |
+| `CONTACT_FROM_EMAIL`           | Expéditeur (domaine vérifié Resend).                          |
+| `NEXT_PUBLIC_SITE_URL`         | URL de prod (SEO, sitemap, OG).                               |
 | `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | Active l'analytics Plausible (sans cookie). Vide = désactivé. |
 
 ## Déploiement (Vercel)

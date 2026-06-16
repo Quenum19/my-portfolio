@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { DATA } from "@/lib/data";
+import { useContent } from "@/components/ContentProvider";
 import { useTranslations } from "next-intl";
 import { Database, Layout, Server, Wrench, Code2 } from "lucide-react";
 
@@ -13,6 +13,7 @@ const icons: Record<string, typeof Code2> = {
 
 export default function Skills() {
   const t = useTranslations("skills");
+  const DATA = useContent();
 
   // Les libellés de catégories sont traduits ; les items restent des données.
   const categories = [

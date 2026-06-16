@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Quote } from "lucide-react";
 import Image from "next/image";
-import { DATA } from "@/lib/data";
+import { useContent } from "@/components/ContentProvider";
 
 export default function Testimonials() {
   const t = useTranslations("testimonials");
+  const DATA = useContent();
 
   // Section masquée tant qu'aucun témoignage n'est renseigné dans lib/data.ts.
   if (DATA.testimonials.length === 0) return null;

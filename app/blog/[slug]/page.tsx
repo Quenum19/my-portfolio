@@ -5,17 +5,24 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import { getTranslations, getLocale } from "next-intl/server";
 import { ArrowLeft, Clock } from "lucide-react";
-import { getAllPosts, getPost } from "@/lib/blog";
+import { getContent } from "@/lib/db";
+import { readingMinutes } from "@/lib/reading-time";
 
 type Params = { slug: string };
 
-export function generateStaticParams() {
-  return getAllPosts().map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const { posts } = await getContent();
+  return posts.filter((p) => p.published).map((p) => ({ slug: p.slug }));
+}
+
+async function getPost(slug: string) {
+  const { posts } = await getContent();
+  return posts.find((p) => p.slug === slug && p.published);
 }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) return {};
   return {
     title: post.title,
@@ -32,7 +39,7 @@ const prettyCodeOptions = {
 
 export default async function BlogPostPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) notFound();
 
   const t = await getTranslations("blog");
@@ -57,7 +64,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
             })}
           </time>
           <span className="flex items-center gap-1">
-            <Clock size={14} /> {t("readingTime", { minutes: post.readingMinutes })}
+            <Clock size={14} /> {t("readingTime", { minutes: readingMinutes(post.content) })}
           </span>
         </div>
 
@@ -66,11 +73,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
         <div className="prose prose-slate dark:prose-invert prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800 max-w-none">
           <MDXRemote
             source={post.content}
-            options={{
-              mdxOptions: {
-                rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
-              },
-            }}
+            options={{ mdxOptions: { rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]] } }}
           />
         </div>
       </div>

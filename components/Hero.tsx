@@ -1,11 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
-import { DATA } from "@/lib/data";
+import { useContent } from "@/components/ContentProvider";
 import { useTranslations } from "next-intl";
 import { ArrowDown, Download } from "lucide-react";
 
 export default function Hero() {
   const t = useTranslations("hero");
+  const DATA = useContent();
 
   return (
     <section

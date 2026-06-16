@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { DATA } from "@/lib/data";
+import { useContent } from "@/components/ContentProvider";
 import { useTranslations } from "next-intl";
 import { ExternalLink, Github, FolderGit2, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import Link from "next/link";
 
 export default function Projects() {
   const t = useTranslations("projects");
+  const DATA = useContent();
 
   return (
     <section id="projects" className="py-24">

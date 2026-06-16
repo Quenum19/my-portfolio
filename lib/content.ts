@@ -1,64 +1,124 @@
-import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
-
 /* =====================================================================
-   CONFIG UNIQUE DU PORTFOLIO
-   ---------------------------------------------------------------------
-   Source de vérité de tout le contenu. Les valeurs marquées « TODO: »
-   sont à remplacer par tes vraies informations. Le reste est déjà rempli.
-   (Les textes d'interface — titres de sections, boutons — sont gérés
-    séparément par l'i18n dans /messages.)
+   MODÈLE DE CONTENU DU PORTFOLIO
+   Tout le contenu éditable du site (géré via /admin et stocké en base).
+   DEFAULT_CONTENT sert de valeur initiale (seed) et de repli si la base
+   n'est pas disponible.
    ===================================================================== */
 
-/* ---------------------------------------------------------------------
-   1. SITE — métadonnées globales (SEO, URL de prod, analytics)
-   --------------------------------------------------------------------- */
-export const SITE = {
-  // URL de prod (surchargée par NEXT_PUBLIC_SITE_URL sur Vercel si défini)
-  url: "https://my-portfolio-tau-three-56.vercel.app",
-  // TODO: @ Twitter/X sans le @ (laisser "" si aucun)
-  twitterHandle: "",
-  defaultLocale: "fr" as const,
-  locales: ["fr", "en"] as const,
+export type SocialPlatform = "github" | "linkedin" | "email" | "twitter" | "website";
+
+export type Social = {
+  platform: SocialPlatform;
+  label: string;
+  url: string;
 };
 
-/* ---------------------------------------------------------------------
-   2. INFOS PERSONNELLES
-   --------------------------------------------------------------------- */
-export const DATA = {
+export type Experience = {
+  company: string;
+  role: string;
+  period: string;
+  description: string;
+  achievements: string[];
+  stack: string[];
+};
+
+export type Education = {
+  degree: string;
+  school: string;
+  year: string;
+};
+
+export type Project = {
+  slug: string;
+  title: string;
+  description: string;
+  problem: string;
+  solution: string;
+  result: string;
+  tech: string[];
+  link: string;
+  github: string | null;
+  type: string;
+  year: string;
+  featured: boolean;
+  image: string;
+};
+
+export type Testimonial = {
+  quote: string;
+  author: string;
+  role: string;
+  avatar?: string;
+};
+
+export type Post = {
+  slug: string;
+  title: string;
+  description: string;
+  date: string; // YYYY-MM-DD
+  tags: string[];
+  content: string; // Markdown / MDX
+  published: boolean;
+};
+
+export type SiteContent = {
+  site: { url: string; twitterHandle: string };
   personal: {
-    name: "Sio Romuald Quenum", // TODO: ton vrai prénom + nom
+    name: string;
+    role: string;
+    age: number;
+    location: string;
+    available: boolean;
+    bio: string;
+    email: string;
+    phone: string;
+    cvUrl: string;
+    socials: Social[];
+  };
+  skills: {
+    frontend: string[];
+    backend: string[];
+    database: string[];
+    tools: string[];
+  };
+  experience: Experience[];
+  education: Education[];
+  projects: Project[];
+  testimonials: Testimonial[];
+  posts: Post[];
+};
+
+export const DEFAULT_CONTENT: SiteContent = {
+  site: {
+    url: "https://my-portfolio-tau-three-56.vercel.app",
+    twitterHandle: "",
+  },
+  personal: {
+    name: "Sio Romuald Quenum",
     role: "Développeur Web Fullstack",
-    age: 24, // TODO: vérifier
+    age: 24,
     location: "Abidjan, Côte d'Ivoire",
-    available: true, // affiche le badge « Disponible »
+    available: true,
     bio: "Passionné par la création d'architectures web robustes. Je navigue avec aisance entre le frontend interactif (React) et le backend structuré (Laravel/Node). Autonome et curieux, je transforme des besoins complexes en solutions digitales élégantes.",
     email: "sioquenum75@gmail.com",
     phone: "+225 0173501445 / +225 0779162986",
-    cvUrl: "/cv.pdf", // fichier dans public/cv.pdf
+    cvUrl: "/cv.pdf",
     socials: [
-      { name: "GitHub", url: "https://github.com/Quenum19", icon: Github as LucideIcon },
+      { platform: "github", label: "GitHub", url: "https://github.com/Quenum19" },
       {
-        name: "LinkedIn",
+        platform: "linkedin",
+        label: "LinkedIn",
         url: "https://www.linkedin.com/in/quenum-sio-267122290",
-        icon: Linkedin as LucideIcon,
       },
-      { name: "Email", url: "mailto:sioquenum75@gmail.com", icon: Mail as LucideIcon },
+      { platform: "email", label: "Email", url: "mailto:sioquenum75@gmail.com" },
     ],
   },
-
-  /* -------------------------------------------------------------------
-     3. COMPÉTENCES
-     ------------------------------------------------------------------- */
   skills: {
     frontend: ["React.js", "Tailwind CSS", "JavaScript (ES6+)", "HTML5/CSS3", "Bootstrap"],
     backend: ["Laravel", "PHP", "Node.js", "Express.js"],
     database: ["MySQL", "MongoDB"],
     tools: ["Git & GitHub", "Postman", "VS Code", "Photoshop", "Canva"],
   },
-
-  /* -------------------------------------------------------------------
-     4. EXPÉRIENCE
-     ------------------------------------------------------------------- */
   experience: [
     {
       company: "Markel Technologie",
@@ -87,10 +147,6 @@ export const DATA = {
       stack: ["Ionic", "JavaScript", "CSS"],
     },
   ],
-
-  /* -------------------------------------------------------------------
-     5. FORMATION
-     ------------------------------------------------------------------- */
   education: [
     {
       degree: "Certificat Bootcamp Développeur de Logiciels",
@@ -108,13 +164,6 @@ export const DATA = {
       year: "2019 – 2021",
     },
   ],
-
-  /* -------------------------------------------------------------------
-     6. PROJETS (façon « case study »)
-     Chaque projet a une page de détail : /projets/<slug>
-     - problem / solution / result : storytelling pour la page détail
-     - image : visuel de couverture dans public/projects/ (placeholder fourni)
-     ------------------------------------------------------------------- */
   projects: [
     {
       slug: "icare-elearning",
@@ -129,11 +178,11 @@ export const DATA = {
         "Centralisation de la formation, suivi des étudiants automatisé et réduction du travail administratif manuel.",
       tech: ["Laravel", "MySQL", "Bootstrap", "VPS"],
       link: "https://e-learning.icare-formations.com/",
-      github: null, // null = dépôt privé (le bouton « Code » est masqué)
+      github: null,
       type: "Fullstack",
       year: "2023",
       featured: true,
-      image: "/projects/icare.svg", // TODO: remplacer par un vrai visuel (.jpg/.png/.webp)
+      image: "/projects/icare.svg",
     },
     {
       slug: "new-wine-churches",
@@ -152,7 +201,7 @@ export const DATA = {
       type: "Fullstack",
       year: "2023",
       featured: true,
-      image: "/projects/newwine.svg", // TODO: remplacer par un vrai visuel
+      image: "/projects/newwine.svg",
     },
     {
       slug: "super-todo-list",
@@ -166,37 +215,46 @@ export const DATA = {
         "Maîtrise concrète de la stack JavaScript fullstack et du cycle de déploiement cloud.",
       tech: ["React", "Node.js", "Express", "MongoDB", "Render"],
       link: "https://mon-todo-mern-app-client.onrender.com/login",
-      github: null, // TODO: mettre le vrai lien du dépôt si public
+      github: null,
       type: "MERN Stack",
       year: "2024",
       featured: false,
-      image: "/projects/todo.svg", // TODO: remplacer par un vrai visuel
+      image: "/projects/todo.svg",
     },
   ],
+  testimonials: [],
+  posts: [
+    {
+      slug: "bien-demarrer-nextjs-16",
+      title: "Bien démarrer avec Next.js 16 et l'App Router",
+      description:
+        "Mes notes pour structurer proprement une application Next.js moderne : App Router, Server Components et Tailwind v4.",
+      date: "2026-06-10",
+      tags: ["Next.js", "React", "Tailwind"],
+      published: true,
+      content: `> ✏️ **Article d'exemple** — modifie ou remplace ce contenu depuis l'admin.
 
-  /* -------------------------------------------------------------------
-     7. TÉMOIGNAGES (optionnel — laisser le tableau vide masque la section)
-     ------------------------------------------------------------------- */
-  testimonials: [
-    // TODO: ajoute de vrais témoignages, ex. :
-    // {
-    //   quote: "Travail sérieux, livraison dans les temps et code propre.",
-    //   author: "Prénom Nom",
-    //   role: "CTO, Entreprise",
-    //   avatar: "/testimonials/personne.jpg", // optionnel
-    // },
-  ] as Testimonial[],
-};
+Next.js 16 pousse encore plus loin l'architecture **App Router** et les **Server Components**.
 
-/* ---------------------------------------------------------------------
-   Types exportés (réutilisés par les composants et les pages détail)
-   --------------------------------------------------------------------- */
-export type Project = (typeof DATA.projects)[number];
-export type Experience = (typeof DATA.experience)[number];
+## 1. Server Components par défaut
 
-export type Testimonial = {
-  quote: string;
-  author: string;
-  role: string;
-  avatar?: string;
+Tout composant est un Server Component tant qu'on n'ajoute pas \`"use client"\`.
+
+\`\`\`tsx
+export default function Page() {
+  return <h1>Bonjour 👋</h1>;
+}
+\`\`\`
+
+## 2. Tailwind v4 : la config dans le CSS
+
+\`\`\`css
+@theme {
+  --color-primary-500: #0ea5e9;
+}
+\`\`\`
+
+À toi de jouer : écris ton premier vrai article depuis le tableau de bord !`,
+    },
+  ],
 };

@@ -1,12 +1,13 @@
 import { ImageResponse } from "next/og";
-import { DATA } from "@/lib/data";
+import { getContent } from "@/lib/db";
 
 export const size = { width: 512, height: 512 };
 export const contentType = "image/png";
 
 // Favicon généré : initiale sur fond dégradé de la marque.
-export default function Icon() {
-  const initial = DATA.personal.name.trim().charAt(0).toUpperCase() || "D";
+export default async function Icon() {
+  const { personal } = await getContent();
+  const initial = personal.name.trim().charAt(0).toUpperCase() || "D";
   return new ImageResponse(
     <div
       style={{

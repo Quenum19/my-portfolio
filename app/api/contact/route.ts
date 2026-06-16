@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { Resend } from "resend";
-import { DATA } from "@/lib/data";
+import { getContent } from "@/lib/db";
 
 /**
  * Route d'envoi du formulaire de contact.
@@ -80,7 +80,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const resend = new Resend(apiKey);
-    const to = process.env.CONTACT_TO_EMAIL || DATA.personal.email;
+    const { personal } = await getContent();
+    const to = process.env.CONTACT_TO_EMAIL || personal.email;
     const from = process.env.CONTACT_FROM_EMAIL || "Portfolio <onboarding@resend.dev>";
 
     const { error } = await resend.emails.send({

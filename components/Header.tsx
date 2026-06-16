@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
-import { DATA } from "@/lib/data";
+import { useContent } from "@/components/ContentProvider";
 import { useActiveSection } from "@/lib/useActiveSection";
 
 const navLinks = [
@@ -25,6 +25,7 @@ const SECTION_IDS: string[] = navLinks
 export default function Header() {
   const t = useTranslations("nav");
   const tA11y = useTranslations("a11y");
+  const DATA = useContent();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const active = useActiveSection(SECTION_IDS);
