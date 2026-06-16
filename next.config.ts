@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
     root: path.join(__dirname),
   },
   images: {
+    // Autorise les images téléversées sur Vercel Blob.
+    remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
     // Autorise l'optimisation des SVG (nos visuels placeholder de projets).
     // CSP en bac à sable : empêche tout script éventuel dans un SVG.
     dangerouslyAllowSVG: true,
