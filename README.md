@@ -20,11 +20,16 @@ npm run dev                  # http://localhost:3000
 
 Scripts utiles : `npm run build`, `npm run start`, `npm run lint`, `npm run format`.
 
-## Où remplir mon contenu
+## Gérer le contenu (sans code) — `/admin`
 
-Tout le contenu est centralisé dans **`lib/data.ts`** (cherche les `// TODO:`).
-Les textes d'interface (boutons, titres de sections) sont dans **`messages/fr.json`** et
-**`messages/en.json`**. Les articles de blog sont des fichiers **`content/blog/*.mdx`**.
+Tout le contenu (infos, compétences, expériences, formation, projets, témoignages, blog)
+se gère depuis le **tableau de bord** : `https://<ton-site>/admin`.
+
+- Connexion par mot de passe (`ADMIN_PASSWORD`).
+- Les modifications sont enregistrées en **base Vercel Postgres** et **visibles immédiatement**
+  sur le site (aucun redéploiement nécessaire).
+- Le contenu par défaut (repli + valeur initiale) est dans `lib/content.ts` (`DEFAULT_CONTENT`).
+- Les textes d'interface (boutons, titres de sections) restent dans `messages/fr.json` / `messages/en.json`.
 
 ## Variables d'environnement
 
@@ -32,8 +37,12 @@ Voir `.env.example`. Principales :
 
 | Variable                       | Rôle                                                          |
 | ------------------------------ | ------------------------------------------------------------- |
+| `ADMIN_PASSWORD`               | Mot de passe d'accès à `/admin`.                              |
+| `AUTH_SECRET`                  | Secret de signature des sessions admin (chaîne aléatoire).    |
+| `POSTGRES_URL`                 | Connexion BDD — injectée par Vercel Postgres.                 |
+| `BLOB_READ_WRITE_TOKEN`        | Upload d'images (Vercel Blob). Sinon, coller une URL.         |
 | `RESEND_API_KEY`               | Active l'envoi réel du formulaire (sinon mode « dry-run »).   |
-| `CONTACT_TO_EMAIL`             | Destinataire des messages (défaut : email de `lib/data.ts`).  |
+| `CONTACT_TO_EMAIL`             | Destinataire des messages (défaut : email du contenu).        |
 | `CONTACT_FROM_EMAIL`           | Expéditeur (domaine vérifié Resend).                          |
 | `NEXT_PUBLIC_SITE_URL`         | URL de prod (SEO, sitemap, OG).                               |
 | `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | Active l'analytics Plausible (sans cookie). Vide = désactivé. |
@@ -44,7 +53,8 @@ Voir `.env.example`. Principales :
 2. Renseigner les variables d'environnement (au minimum `NEXT_PUBLIC_SITE_URL`,
    et `RESEND_API_KEY` pour le formulaire).
 3. Build command `next build`, aucune config supplémentaire nécessaire.
-4. Vérifier après déploiement : `/`, `/blog`, `/projets/<slug>`, `/robots.txt`, `/sitemap.xml`.
+4. Créer la base : **Storage → Create Database → Postgres**, puis **Connect Project**.
+5. Définir `ADMIN_PASSWORD` et `AUTH_SECRET`, puis vérifier `/`, `/admin`, `/blog`, `/sitemap.xml`.
 
 ## Accessibilité & SEO
 
