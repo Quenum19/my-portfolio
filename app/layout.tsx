@@ -3,14 +3,11 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import React from "react";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import Providers from "@/components/Providers";
 import { ContentProvider } from "@/components/ContentProvider";
 import JsonLd from "@/components/JsonLd";
 import Analytics from "@/components/Analytics";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ReadingProgress from "@/components/ReadingProgress";
 import { getContent } from "@/lib/db";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -73,7 +70,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
-  const t = await getTranslations("a11y");
   const content = await getContent();
 
   return (
@@ -85,20 +81,7 @@ export default async function RootLayout({
         <Analytics />
         <NextIntlClientProvider>
           <ContentProvider value={content}>
-            <Providers>
-              <a
-                href="#main-content"
-                className="focus:bg-primary-600 sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:px-4 focus:py-2 focus:text-white"
-              >
-                {t("skipToContent")}
-              </a>
-              <ReadingProgress />
-              <Header />
-              <main id="main-content" className="min-h-screen">
-                {children}
-              </main>
-              <Footer />
-            </Providers>
+            <Providers>{children}</Providers>
           </ContentProvider>
         </NextIntlClientProvider>
       </body>
