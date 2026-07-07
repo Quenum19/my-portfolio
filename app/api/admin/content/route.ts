@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { saveContent } from "@/lib/db";
+import { getContent, saveContent } from "@/lib/db";
 import type { SiteContent } from "@/lib/content";
+
+/** Renvoie le contenu brut actuel (réservé à l'admin authentifié). */
+export async function GET() {
+  if (!(await isAuthenticated())) {
+    return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
+  }
+  return NextResponse.json(await getContent());
+}
 
 /** Enregistre le contenu complet du site (réservé à l'admin authentifié). */
 export async function POST(req: NextRequest) {
