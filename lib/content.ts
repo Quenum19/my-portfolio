@@ -366,6 +366,14 @@ export const DEFAULT_CONTENT: SiteContent = {
   education: [
     {
       degree: l(
+        "Certificat de Qualification Professionnelle (CQP)",
+        "Professional Qualification Certificate (CQP)",
+      ),
+      school: "Projet E2C_TIC, Abidjan",
+      year: l("Août 2024 – Déc. 2025", "Aug 2024 – Dec 2025"),
+    },
+    {
+      degree: l(
         "Certificat Bootcamp Développeur de Logiciels",
         "Software Developer Bootcamp Certificate",
       ),
@@ -387,6 +395,11 @@ export const DEFAULT_CONTENT: SiteContent = {
       ),
       school: "EST Groupe Loko, Abidjan",
       year: l("2019 – 2021", "2019 – 2021"),
+    },
+    {
+      degree: l("Baccalauréat série D", "High School Diploma (Science, Series D)"),
+      school: "Lycée Moderne 1, Bouaflé",
+      year: l("2018 – 2019", "2018 – 2019"),
     },
   ],
   projects: [
