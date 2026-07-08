@@ -3,6 +3,8 @@ import { getContent } from "@/lib/db";
 import { resolveContent } from "@/lib/content";
 import { defaultLocale } from "@/i18n/config";
 
+export const dynamic = "force-dynamic";
+
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const { personal } = resolveContent(await getContent(), defaultLocale);
   return {

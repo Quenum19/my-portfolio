@@ -3,6 +3,7 @@ import { getContent } from "@/lib/db";
 
 export const size = { width: 512, height: 512 };
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 
 // Favicon généré : initiale sur fond dégradé de la marque.
 export default async function Icon() {

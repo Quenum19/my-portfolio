@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 import { getContent } from "@/lib/db";
 
+// Toujours refléter le contenu courant de la base (modifs admin sans rebuild).
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const content = await getContent();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || content.site.url;

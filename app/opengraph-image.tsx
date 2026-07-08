@@ -6,6 +6,7 @@ import { defaultLocale } from "@/i18n/config";
 export const alt = "Portfolio";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 
 // Image Open Graph dynamique (partage réseaux sociaux).
 export default async function OpengraphImage() {
