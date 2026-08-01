@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getTranslations, getLocale } from "next-intl/server";
 import { ArrowUpRight, Clock } from "lucide-react";
@@ -6,13 +7,15 @@ import { getContent } from "@/lib/db";
 import { resolveContent } from "@/lib/content";
 import { defaultLocale, locales, type Locale } from "@/i18n/config";
 import { readingMinutes } from "@/lib/reading-time";
+import { BLOG_ENABLED } from "@/lib/features";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("blog");
-  return { title: t("title"), description: t("subtitle") };
+  return { title: t("title"), description: t("subtitle"), robots: { index: BLOG_ENABLED } };
 }
 
 export default async function BlogPage() {
+  if (!BLOG_ENABLED) notFound();
   const t = await getTranslations("blog");
   const rawLocale = (await getLocale()) as Locale;
   const locale = locales.includes(rawLocale) ? rawLocale : defaultLocale;

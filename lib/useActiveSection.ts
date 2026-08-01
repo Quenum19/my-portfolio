@@ -2,32 +2,46 @@
 import { useEffect, useState } from "react";
 
 /**
- * Renvoie l'id de la section actuellement visible à l'écran (scroll-spy).
- * Utilise IntersectionObserver ; ne fait rien si aucune section n'est présente
- * (ex. sur les pages /blog ou /projets).
+ * Renvoie l'id de la section active (scroll-spy).
+ * Approche par position : la section active est la DERNIÈRE dont le haut a
+ * franchi une ligne de référence (~35% de la hauteur d'écran). Fiable même
+ * avec des sections très hautes (contrairement au ratio d'intersection).
+ * Ne fait rien si aucune section n'est présente (ex. pages /blog, /projets).
  */
 export function useActiveSection(ids: string[]): string | null {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
-    const elements = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
+    const present = ids.filter((id) => document.getElementById(id));
+    if (present.length === 0) return;
 
-    if (elements.length === 0) return;
+    const compute = () => {
+      const line = window.innerHeight * 0.35;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActive(visible[0].target.id);
-      },
-      { rootMargin: "-40% 0px -55% 0px", threshold: [0, 0.25, 0.5, 1] },
-    );
+      // Bas de page atteint : on active la dernière section.
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (atBottom) {
+        setActive(present[present.length - 1]);
+        return;
+      }
 
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+      let current = present[0];
+      for (const id of present) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top - line <= 0) current = id;
+      }
+      setActive(current);
+    };
+
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute);
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
   }, [ids]);
 
   return active;

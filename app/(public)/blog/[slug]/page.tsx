@@ -9,15 +9,18 @@ import { getContent } from "@/lib/db";
 import { resolveContent } from "@/lib/content";
 import { defaultLocale, locales, type Locale } from "@/i18n/config";
 import { readingMinutes } from "@/lib/reading-time";
+import { BLOG_ENABLED } from "@/lib/features";
 
 type Params = { slug: string };
 
 export async function generateStaticParams() {
+  if (!BLOG_ENABLED) return [];
   const { posts } = await getContent();
   return posts.filter((p) => p.published).map((p) => ({ slug: p.slug }));
 }
 
 async function getPost(slug: string) {
+  if (!BLOG_ENABLED) return undefined;
   const raw = (await getLocale()) as Locale;
   const locale = locales.includes(raw) ? raw : defaultLocale;
   const { posts } = resolveContent(await getContent(), locale);

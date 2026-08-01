@@ -8,19 +8,21 @@ import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
 import { useContent } from "@/components/ContentProvider";
 import { useActiveSection } from "@/lib/useActiveSection";
+import { BLOG_ENABLED } from "@/lib/features";
 
-const navLinks = [
-  { key: "home", href: "/#hero", section: "hero" },
+const ALL_NAV_LINKS = [
+  { key: "home", href: "/#hero", section: "hero" as string | null },
   { key: "skills", href: "/#skills", section: "skills" },
   { key: "experience", href: "/#experience", section: "experience" },
   { key: "projects", href: "/#projects", section: "projects" },
   { key: "blog", href: "/blog", section: null },
   { key: "contact", href: "/#contact", section: "contact" },
-] as const;
+];
 
-const SECTION_IDS: string[] = navLinks
-  .map((l) => l.section)
-  .filter((s): s is NonNullable<typeof s> => s !== null);
+// La section Blog n'apparaît dans la nav que si elle est activée.
+const navLinks = ALL_NAV_LINKS.filter((l) => l.key !== "blog" || BLOG_ENABLED);
+
+const SECTION_IDS: string[] = navLinks.map((l) => l.section).filter((s): s is string => s !== null);
 
 export default function Header() {
   const t = useTranslations("nav");
