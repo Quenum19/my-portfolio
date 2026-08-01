@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Save, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import type {
   SiteContent,
@@ -52,10 +52,25 @@ export default function AdminDashboard({ initial }: { initial: SiteContent }) {
   const [tab, setTab] = useState<TabId>("personal");
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [dirty, setDirty] = useState(false);
 
+  // Toute modification passe par patch() : on marque le formulaire comme « non enregistré ».
   function patch(part: Partial<SiteContent>) {
     setContent((c) => ({ ...c, ...part }));
+    setDirty(true);
+    if (status === "ok") setStatus("idle");
   }
+
+  // Avertit avant de quitter la page si des modifications ne sont pas enregistrées.
+  useEffect(() => {
+    if (!dirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [dirty]);
 
   async function save() {
     setStatus("saving");
@@ -74,6 +89,7 @@ export default function AdminDashboard({ initial }: { initial: SiteContent }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Erreur");
       setContent(payload);
+      setDirty(false);
       setStatus("ok");
       setMessage("Modifications enregistrées ✓ (visibles immédiatement sur le site)");
     } catch (e) {
@@ -102,7 +118,13 @@ export default function AdminDashboard({ initial }: { initial: SiteContent }) {
           ))}
         </div>
         <div className="ml-auto flex items-center gap-3">
-          {status !== "idle" && status !== "saving" && (
+          {dirty && status !== "saving" && (
+            <span className="flex items-center gap-1 text-sm font-medium text-amber-600">
+              <span className="h-2 w-2 rounded-full bg-amber-500" />
+              Modifications non enregistrées
+            </span>
+          )}
+          {status !== "idle" && status !== "saving" && !dirty && (
             <span
               className={`flex items-center gap-1 text-sm ${status === "ok" ? "text-emerald-600" : "text-red-600"}`}
             >
@@ -110,10 +132,20 @@ export default function AdminDashboard({ initial }: { initial: SiteContent }) {
               {message}
             </span>
           )}
+          {status === "error" && (
+            <span className="flex items-center gap-1 text-sm text-red-600">
+              <AlertCircle size={16} />
+              {message}
+            </span>
+          )}
           <button
             onClick={save}
-            disabled={status === "saving"}
-            className="bg-primary-600 hover:bg-primary-500 flex items-center gap-2 rounded-lg px-5 py-2 font-medium text-white transition-colors disabled:opacity-60"
+            disabled={status === "saving" || !dirty}
+            className={`flex items-center gap-2 rounded-lg px-5 py-2 font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+              dirty
+                ? "bg-primary-600 hover:bg-primary-500 ring-primary-300 ring-2"
+                : "bg-primary-600"
+            }`}
           >
             {status === "saving" ? (
               <Loader2 size={18} className="animate-spin" />

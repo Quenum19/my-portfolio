@@ -228,7 +228,14 @@ export function ListItemCard({
               <ChevronDown size={16} />
             </IconButton>
           )}
-          <IconButton title="Supprimer" onClick={onRemove}>
+          <IconButton
+            title="Supprimer"
+            onClick={() => {
+              if (window.confirm(`Supprimer « ${title} » ? Pense à cliquer sur « Enregistrer ».`)) {
+                onRemove();
+              }
+            }}
+          >
             <Trash2 size={16} />
           </IconButton>
         </div>
