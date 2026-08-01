@@ -13,6 +13,10 @@ import { BLOG_ENABLED } from "@/lib/features";
 
 type Params = { slug: string };
 
+// Rendu dynamique : le contenu vient de la base (cookies i18n) — évite un
+// conflit de génération statique quand la liste des articles est vide.
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   if (!BLOG_ENABLED) return [];
   const { posts } = await getContent();
