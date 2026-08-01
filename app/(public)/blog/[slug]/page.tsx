@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -45,6 +45,7 @@ const prettyCodeOptions = {
 };
 
 export default async function BlogPostPage({ params }: { params: Promise<Params> }) {
+  if (!BLOG_ENABLED) redirect("/");
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) notFound();
