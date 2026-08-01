@@ -667,33 +667,6 @@ export const DEFAULT_CONTENT: SiteContent = {
       featured: false,
       image: "/projects/icare.svg",
     },
-    {
-      slug: "super-todo-list",
-      title: "Super ToDo List",
-      description: l(
-        "Application de gestion de tâches avec authentification. Projet d'apprentissage MERN Stack.",
-        "Task management app with authentication. A MERN Stack learning project.",
-      ),
-      problem: l(
-        "Mettre en pratique la stack MERN de bout en bout avec une vraie authentification.",
-        "Practice the MERN stack end to end with real authentication.",
-      ),
-      solution: l(
-        "Application full MERN (MongoDB, Express, React, Node) avec authentification, CRUD de tâches et déploiement sur Render.",
-        "Full MERN app (MongoDB, Express, React, Node) with authentication, task CRUD and deployment on Render.",
-      ),
-      result: l(
-        "Maîtrise concrète de la stack JavaScript fullstack et du cycle de déploiement cloud.",
-        "Hands-on mastery of the fullstack JavaScript stack and the cloud deployment cycle.",
-      ),
-      tech: ["React", "Node.js", "Express", "MongoDB", "Render"],
-      link: "https://mon-todo-mern-app-client.onrender.com/login",
-      github: null,
-      type: "MERN Stack",
-      year: "2024",
-      featured: false,
-      image: "/projects/todo.svg",
-    },
   ],
   testimonials: [],
   posts: [
