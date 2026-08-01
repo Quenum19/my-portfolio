@@ -555,33 +555,6 @@ export const DEFAULT_CONTENT: SiteContent = {
       image: "/projects/icare.svg",
     },
     {
-      slug: "new-wine-churches",
-      title: "New Wine Churches",
-      description: l(
-        "Site vitrine et gestion pour une organisation religieuse. Architecture MVC robuste.",
-        "Showcase website and management tool for a religious organization. Robust MVC architecture.",
-      ),
-      problem: l(
-        "L'organisation n'avait pas de présence en ligne ni d'outil pour gérer ses contenus et ses événements.",
-        "The organization had no online presence nor a tool to manage its content and events.",
-      ),
-      solution: l(
-        "Développement d'un site vitrine Laravel avec back-office de gestion de contenu, sur une architecture MVC claire et un hébergement mutualisé.",
-        "Built a Laravel showcase website with a content-management back office, on a clean MVC architecture and shared hosting.",
-      ),
-      result: l(
-        "Présence en ligne professionnelle et autonomie de l'équipe pour publier ses contenus.",
-        "Professional online presence and team autonomy to publish content.",
-      ),
-      tech: ["Laravel", "MySQL", "Shared Hosting"],
-      link: "https://newwinechurches.com",
-      github: null,
-      type: "Fullstack",
-      year: "2023",
-      featured: true,
-      image: "/projects/newwine.svg",
-    },
-    {
       slug: "super-todo-list",
       title: "Super ToDo List",
       description: l(
