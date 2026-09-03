@@ -7,13 +7,14 @@
    ===================================================================== */
 
 import type { Locale } from "@/i18n/config";
+import type { SocialPlatform } from "./socials";
 
 /** Texte traduisible : une valeur par langue. */
 export type L = { fr: string; en: string };
 /** Liste de textes traduisible. */
 export type LList = { fr: string[]; en: string[] };
 
-export type SocialPlatform = "github" | "linkedin" | "email" | "twitter" | "website";
+export type { SocialPlatform };
 export type Social = { platform: SocialPlatform; label: string; url: string };
 
 /* ----- Types BRUTS (bilingues, tels que stockés en base) ----- */

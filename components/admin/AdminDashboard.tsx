@@ -24,6 +24,9 @@ import {
   move,
 } from "./ui";
 import { ImageField } from "./ImageField";
+import { FileField } from "./FileField";
+import SocialIcon from "@/components/SocialIcon";
+import { SOCIAL_PLATFORMS, SOCIAL_LABELS, platformFromUrl } from "@/lib/socials";
 
 const emptyL = { fr: "", en: "" };
 
@@ -67,8 +70,6 @@ const TABS: { id: TabId; label: string }[] = [
   { id: "testimonials", label: "Témoignages" },
   { id: "blog", label: "Blog" },
 ];
-
-const PLATFORMS: SocialPlatform[] = ["github", "linkedin", "email", "twitter", "website"];
 
 export default function AdminDashboard({ initial }: { initial: SiteContent }) {
   const [content, setContent] = useState<SiteContent>(initial);
@@ -252,9 +253,14 @@ function PersonalSection({
       <Field label="Téléphone">
         <TextInput value={p.phone} onChange={(e) => setP({ phone: e.target.value })} />
       </Field>
-      <Field label="Chemin du CV (PDF)" hint="ex. /cv.pdf — laisser vide pour masquer le bouton">
-        <TextInput value={p.cvUrl} onChange={(e) => setP({ cvUrl: e.target.value })} />
-      </Field>
+      <div className="md:col-span-2">
+        <Field
+          label="CV (PDF)"
+          hint="Téléverse ton PDF : le bouton « Télécharger mon CV » pointera dessus après enregistrement. Un chemin comme /cv.pdf reste accepté."
+        >
+          <FileField value={p.cvUrl} onChange={(cvUrl) => setP({ cvUrl })} />
+        </Field>
+      </div>
       <div className="flex items-end">
         <Toggle
           checked={p.available}
@@ -272,7 +278,16 @@ function PersonalSection({
         <h3 className="mb-3 text-sm font-semibold text-slate-500">Réseaux sociaux</h3>
         <div className="space-y-3">
           {p.socials.map((s, i) => (
-            <div key={i} className="grid gap-2 sm:grid-cols-[140px_1fr_1fr_auto]">
+            <div
+              key={i}
+              className="grid gap-2 sm:grid-cols-[auto_170px_1fr_1fr_auto] sm:items-center"
+            >
+              <span
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-500 dark:border-slate-700"
+                title={SOCIAL_LABELS[s.platform] ?? s.platform}
+              >
+                <SocialIcon platform={s.platform} size={18} />
+              </span>
               <select
                 value={s.platform}
                 onChange={(e) => {
@@ -282,9 +297,9 @@ function PersonalSection({
                 }}
                 className="rounded-lg border border-slate-300 bg-white p-2.5 text-sm dark:border-slate-700 dark:bg-slate-800"
               >
-                {PLATFORMS.map((pl) => (
+                {SOCIAL_PLATFORMS.map((pl) => (
                   <option key={pl} value={pl}>
-                    {pl}
+                    {SOCIAL_LABELS[pl]}
                   </option>
                 ))}
               </select>
@@ -301,8 +316,17 @@ function PersonalSection({
                 value={s.url}
                 placeholder="https://… ou mailto:…"
                 onChange={(e) => {
+                  const url = e.target.value;
                   const socials = [...p.socials];
-                  socials[i] = { ...s, url: e.target.value };
+                  // L'URL suffit à identifier le réseau : on corrige la plateforme
+                  // tant que l'auteur n'a pas choisi autre chose que « Site web ».
+                  const detected = s.platform === "website" ? platformFromUrl(url) : null;
+                  socials[i] = {
+                    ...s,
+                    url,
+                    platform: detected ?? s.platform,
+                    label: s.label || (detected ? SOCIAL_LABELS[detected] : s.label),
+                  };
                   setP({ socials });
                 }}
               />

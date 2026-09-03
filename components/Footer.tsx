@@ -1,16 +1,7 @@
 "use client";
 import { useContent } from "@/components/ContentProvider";
 import { useTranslations } from "next-intl";
-import { Github, Linkedin, Mail, Twitter, Globe, type LucideIcon } from "lucide-react";
-import type { SocialPlatform } from "@/lib/content";
-
-const ICONS: Record<SocialPlatform, LucideIcon> = {
-  github: Github,
-  linkedin: Linkedin,
-  email: Mail,
-  twitter: Twitter,
-  website: Globe,
-};
+import SocialIcon from "@/components/SocialIcon";
 
 export default function Footer() {
   const t = useTranslations("footer");
@@ -23,22 +14,20 @@ export default function Footer() {
         <p className="text-sm">
           © {year} {DATA.personal.name}. {t("rights")}
         </p>
-        <div className="flex gap-6">
-          {DATA.personal.socials.map((social) => {
-            const Icon = ICONS[social.platform] ?? Globe;
-            return (
-              <a
-                key={social.label}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-white"
-                aria-label={social.label}
-              >
-                <Icon size={20} />
-              </a>
-            );
-          })}
+        <div className="flex flex-wrap justify-center gap-6">
+          {DATA.personal.socials.map((social) => (
+            <a
+              key={`${social.platform}-${social.url}`}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-white"
+              aria-label={social.label || social.platform}
+              title={social.label || social.platform}
+            >
+              <SocialIcon platform={social.platform} />
+            </a>
+          ))}
         </div>
       </div>
     </footer>
