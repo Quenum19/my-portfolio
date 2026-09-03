@@ -19,12 +19,35 @@ import {
   LocalizedTextArea,
   LocalizedStringList,
   ListItemCard,
+  ListFilter,
   AddButton,
   move,
 } from "./ui";
 import { ImageField } from "./ImageField";
 
 const emptyL = { fr: "", en: "" };
+
+/** Au-delà de ce nombre d'éléments, la liste affiche un champ de filtrage. */
+const LIST_FILTER_FROM = 6;
+/** Au-delà de ce nombre d'éléments, les cartes s'ouvrent une par une. */
+const LIST_COLLAPSE_FROM = 4;
+
+/**
+ * Associe chaque élément à son index réel avant filtrage : les modifications
+ * continuent de viser la bonne entrée du tableau même quand la vue est filtrée.
+ */
+function filterEntries<T>(
+  items: T[],
+  query: string,
+  fields: (item: T) => (string | undefined | null)[],
+): { item: T; index: number }[] {
+  const entries = items.map((item, index) => ({ item, index }));
+  const q = query.trim().toLowerCase();
+  if (!q) return entries;
+  return entries.filter(({ item }) =>
+    fields(item).filter(Boolean).join(" ").toLowerCase().includes(q),
+  );
+}
 
 type TabId =
   | "personal"
@@ -343,14 +366,29 @@ function ExperienceSection({
 }) {
   const set = (i: number, part: Partial<Experience>) =>
     onChange(items.map((it, j) => (j === i ? { ...it, ...part } : it)));
+  const [query, setQuery] = useState("");
+  const entries = filterEntries(items, query, (exp) => [exp.company, exp.role.fr, exp.role.en]);
   return (
     <div className="space-y-4">
-      {items.map((exp, i) => (
+      {items.length > LIST_FILTER_FROM && (
+        <ListFilter
+          value={query}
+          onChange={setQuery}
+          placeholder="Filtrer par poste ou entreprise…"
+          shown={entries.length}
+          total={items.length}
+        />
+      )}
+      {entries.map(({ item: exp, index: i }) => (
         <ListItemCard
           key={i}
           title={exp.role.fr || `Expérience ${i + 1}`}
-          onMoveUp={i > 0 ? () => onChange(move(items, i, i - 1)) : undefined}
-          onMoveDown={i < items.length - 1 ? () => onChange(move(items, i, i + 1)) : undefined}
+          subtitle={[exp.company, exp.period.fr].filter(Boolean).join(" · ")}
+          defaultOpen={items.length <= LIST_COLLAPSE_FROM}
+          onMoveUp={!query && i > 0 ? () => onChange(move(items, i, i - 1)) : undefined}
+          onMoveDown={
+            !query && i < items.length - 1 ? () => onChange(move(items, i, i + 1)) : undefined
+          }
           onRemove={() => onChange(items.filter((_, j) => j !== i))}
         >
           <Field label="Entreprise">
@@ -450,14 +488,37 @@ function ProjectsSection({
 }) {
   const set = (i: number, part: Partial<Project>) =>
     onChange(items.map((it, j) => (j === i ? { ...it, ...part } : it)));
+  const [query, setQuery] = useState("");
+  const entries = filterEntries(items, query, (pr) => [
+    pr.title,
+    pr.slug,
+    pr.type,
+    pr.year,
+    ...pr.tech,
+  ]);
   return (
     <div className="space-y-4">
-      {items.map((pr, i) => (
+      {items.length > LIST_FILTER_FROM && (
+        <ListFilter
+          value={query}
+          onChange={setQuery}
+          placeholder="Filtrer par titre, techno, type…"
+          shown={entries.length}
+          total={items.length}
+        />
+      )}
+      {entries.map(({ item: pr, index: i }) => (
         <ListItemCard
           key={i}
           title={pr.title || `Projet ${i + 1}`}
-          onMoveUp={i > 0 ? () => onChange(move(items, i, i - 1)) : undefined}
-          onMoveDown={i < items.length - 1 ? () => onChange(move(items, i, i + 1)) : undefined}
+          subtitle={[pr.type, pr.year, pr.featured ? "★ mis en avant" : ""]
+            .filter(Boolean)
+            .join(" · ")}
+          defaultOpen={items.length <= LIST_COLLAPSE_FROM}
+          onMoveUp={!query && i > 0 ? () => onChange(move(items, i, i - 1)) : undefined}
+          onMoveDown={
+            !query && i < items.length - 1 ? () => onChange(move(items, i, i + 1)) : undefined
+          }
           onRemove={() => onChange(items.filter((_, j) => j !== i))}
         >
           <div className="grid gap-3 md:grid-cols-2">

@@ -34,7 +34,11 @@
     "tools": "Tools & DevOps"
   },
   "experience": {
-    "title": "Professional Experience"
+    "title": "Professional Experience",
+    "showAll": "See my full career ({count} more)",
+    "showLess": "Collapse career",
+    "showDetails": "Details",
+    "hideDetails": "Hide"
   },
   "projects": {
     "title": "Selected Work",
@@ -47,7 +51,19 @@
     "problem": "Problem",
     "solution": "Solution",
     "result": "Result",
-    "stack": "Tech stack"
+    "stack": "Tech stack",
+    "seeAll": "See all {count} projects",
+    "indexTitle": "All projects",
+    "indexSubtitle": "Search by name, technology or project type — every card opens a detailed case study.",
+    "searchPlaceholder": "Search a project, a technology…",
+    "searchLabel": "Search projects",
+    "filterAll": "All",
+    "count": "{count, plural, =0 {No projects} =1 {1 project} other {# projects}}",
+    "reset": "Reset",
+    "empty": "No project matches this search.",
+    "loadMore": "Show {count} more",
+    "featured": "Featured",
+    "backHome": "Back to home"
   },
   "testimonials": {
     "title": "Trusted by",

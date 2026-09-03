@@ -34,7 +34,11 @@
     "tools": "Outils & DevOps"
   },
   "experience": {
-    "title": "Expérience Professionnelle"
+    "title": "Expérience Professionnelle",
+    "showAll": "Voir tout mon parcours ({count} de plus)",
+    "showLess": "Réduire le parcours",
+    "showDetails": "Détails",
+    "hideDetails": "Masquer"
   },
   "projects": {
     "title": "Projets Réalisés",
@@ -47,7 +51,19 @@
     "problem": "Problème",
     "solution": "Solution",
     "result": "Résultat",
-    "stack": "Stack technique"
+    "stack": "Stack technique",
+    "seeAll": "Voir les {count} projets",
+    "indexTitle": "Tous les projets",
+    "indexSubtitle": "Cherchez par nom, technologie ou type de projet — chaque fiche ouvre une étude de cas détaillée.",
+    "searchPlaceholder": "Rechercher un projet, une techno…",
+    "searchLabel": "Rechercher un projet",
+    "filterAll": "Tous",
+    "count": "{count, plural, =0 {Aucun projet} =1 {1 projet} other {# projets}}",
+    "reset": "Réinitialiser",
+    "empty": "Aucun projet ne correspond à cette recherche.",
+    "loadMore": "Afficher {count} de plus",
+    "featured": "Mis en avant",
+    "backHome": "Retour à l'accueil"
   },
   "testimonials": {
     "title": "Ils m'ont fait confiance",
